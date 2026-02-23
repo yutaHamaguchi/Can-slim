@@ -117,6 +117,26 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI','Noto Sans JP
 .rad-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
 .rad-wrap{position:relative;height:300px;}
 
+/* Score Summary Table */
+.score-summary{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px;}
+.score-summary-title{font-size:.85rem;font-weight:700;color:var(--text2);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase;}
+.score-table{width:100%;border-collapse:collapse;}
+.score-table th{font-size:.72rem;color:var(--text2);font-weight:600;padding:6px 10px;text-align:center;border-bottom:1px solid var(--border);}
+.score-table th:first-child{text-align:left;}
+.score-table td{padding:8px 10px;text-align:center;border-bottom:1px solid rgba(46,50,80,.5);font-size:.82rem;}
+.score-table td:first-child{text-align:left;font-size:.75rem;color:var(--text2);}
+.score-table tr:last-child td{border-bottom:none;}
+.score-table .score-key{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;background:rgba(108,99,255,.2);color:var(--accent);font-weight:700;font-size:.8rem;margin-right:6px;}
+.score-table.us .score-key{background:rgba(0,212,170,.2);color:var(--accent2);}
+.score-num{font-weight:700;font-size:.92rem;}
+.score-pip-row{display:flex;justify-content:center;gap:2px;margin-top:3px;}
+.score-pip{width:7px;height:7px;border-radius:50%;background:var(--border);}
+.score-pip.on{background:var(--gold);}
+.total-row td{background:rgba(108,99,255,.08);font-weight:700;}
+.total-row .total-score-val{font-size:1.1rem;font-weight:700;color:var(--gold);}
+.score-bar-mini{width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:6px;}
+.score-bar-mini-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+
 /* Disclaimer */
 .disc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:20px;}
 .disc p{font-size:.72rem;color:var(--text2);line-height:1.6;}
@@ -255,6 +275,38 @@ function renderDet(mkt,idx){
   const isUs=mkt==='us';
   const c=document.getElementById(mkt+'-det');
 
+  // CANSLIM Score Summary Table
+  const CS_FULL_LABELS={C:'C — 当期EPS成長率',A:'A — 年間EPS成長率',N:'N — 新製品・新高値',S:'S — 需給',L:'L — 業界リーダー',I:'I — 機関投資家',M:'M — 市場方向性'};
+  const scorePips=(n)=>Array.from({length:10},(_,i)=>`<div class="score-pip${i<n?' on':''}"></div>`).join('');
+  const totalAvg=(Object.values(s.canslim).reduce((a,v)=>a+v.score,0)/7).toFixed(1);
+  const scoreTableHTML=`<div class="score-summary">
+<div class="score-summary-title">📊 CANSLIM 評価スコア一覧</div>
+<table class="score-table${isUs?' us':''}">
+<thead><tr>
+  <th>評価項目</th>
+  <th>スコア</th>
+  <th>10段階評価</th>
+  <th>バー</th>
+</tr></thead>
+<tbody>
+${CS_KEYS.map(k=>{
+  const it=s.canslim[k];
+  const color=it.score>=9?'var(--green)':it.score>=7?'var(--gold)':'var(--red)';
+  return `<tr>
+  <td><span class="score-key">${k}</span>${CS_FULL_LABELS[k]}</td>
+  <td><span class="score-num" style="color:${color}">${it.score}<span style="font-size:.7rem;color:var(--text2);font-weight:400">/10</span></span></td>
+  <td><div class="score-pip-row">${scorePips(it.score)}</div></td>
+  <td><div class="score-bar-mini"><div class="score-bar-mini-fill" style="width:${it.score*10}%"></div></div></td>
+</tr>`;
+}).join('')}
+<tr class="total-row">
+  <td style="color:var(--text);font-weight:700;">🏆 総合スコア（平均）</td>
+  <td colspan="3"><span class="total-score-val">${s.totalScore}</span><span style="font-size:.8rem;color:var(--text2);font-weight:400">/10</span>&nbsp;&nbsp;<span style="font-size:.75rem;color:var(--text2);">（各項目平均: ${totalAvg}）</span></td>
+</tr>
+</tbody>
+</table>
+</div>`;
+
   const csHTML=CS_KEYS.map(k=>{
     const it=s.canslim[k];
     return `<div class="cs-item">
@@ -288,7 +340,8 @@ function renderDet(mkt,idx){
   <div class="det-sc">CANSLIM総合: <b>${s.totalScore}</b>/10</div>
 </div>
 </div>
-<div class="sec-title ${isUs?'us':''}">CANSLIM 7基準 詳細評価</div>
+${scoreTableHTML}
+<div class="sec-title ${isUs?'us':''}">CANSLIM 7基準 詳細評価（コメント付き）</div>
 <div class="cs-grid">${csHTML}</div>
 <div class="ent-sec">
 <div class="ent-title"><div class="ent-dot"></div>押し目買い戦略・指値</div>
