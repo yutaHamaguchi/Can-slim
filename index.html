@@ -42,14 +42,7 @@
   .app-title span{color:var(--accent);}
   .header-date{font-size:.7rem;color:var(--text2);background:var(--card2);padding:3px 8px;border-radius:20px;border:1px solid var(--border);}
 
-  /* ── マーケットタブ ── */
-  .mkt-tabs{display:flex;gap:8px;margin-top:10px;}
-  .mkt-tab{
-    flex:1;padding:8px 0;border-radius:10px;border:1.5px solid var(--border);
-    background:transparent;color:var(--text2);font-size:.82rem;font-weight:600;
-    cursor:pointer;transition:all .2s;
-  }
-  .mkt-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+
 
   /* ── メインコンテンツ ── */
   .main{padding:12px 12px calc(var(--safe-bottom) + 70px);}
@@ -318,13 +311,10 @@
 <!-- ヘッダー -->
 <div class="app-header">
   <div class="header-top">
-    <div class="app-title"><span>CANSLIM</span> レポート</div>
+    <div class="app-title"><span>CANSLIM</span> 米国株レポート</div>
     <div class="header-date" id="hdr-date">2026/02/20</div>
   </div>
-  <div class="mkt-tabs">
-    <button class="mkt-tab active" id="tab-jp" onclick="switchMkt('jp')">🇯🇵 国内株</button>
-    <button class="mkt-tab" id="tab-us" onclick="switchMkt('us')">🇺🇸 米国株</button>
-  </div>
+
 </div>
 
 <!-- メイン -->
@@ -333,17 +323,8 @@
   <!-- ランキングページ -->
   <div class="page-sec active" id="page-rank">
 
-    <!-- 国内 -->
-    <div class="mkt-sec active" id="sec-jp">
-      <div class="sec-title">国内 上位5銘柄 — 東証プライム・スタンダード・グロース</div>
-      <div class="cards-scroll" id="cards-jp"></div>
-      <div class="sec-title" style="margin-top:20px;">選択銘柄の詳細</div>
-      <div class="det-panel" id="det-jp"></div>
-    </div>
-
-    <!-- 米国 -->
-    <div class="mkt-sec" id="sec-us">
-      <div class="sec-title">米国 上位3銘柄 — NYSE / NASDAQ</div>
+    <div class="mkt-sec active" id="sec-us">
+      <div class="sec-title">🇺🇸 上位3銘柄 — NYSE / NASDAQ</div>
       <div class="cards-scroll" id="cards-us"></div>
       <div class="sec-title" style="margin-top:20px;">選択銘柄の詳細</div>
       <div class="det-panel" id="det-us"></div>
@@ -353,23 +334,7 @@
 
   <!-- 比較チャートページ -->
   <div class="page-sec" id="page-chart">
-    <div class="mkt-sec active" id="csec-jp">
-      <div class="compare-section">
-        <div class="chart-card">
-          <div class="chart-title">総合スコア比較（10点満点）</div>
-          <div class="chart-h200"><canvas id="jp-sc"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">EPS成長率 vs 株価変化率</div>
-          <div class="chart-h240"><canvas id="jp-bb"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-title">CANSLIMレーダー比較</div>
-          <div class="chart-h240"><canvas id="jp-ra-all"></canvas></div>
-        </div>
-      </div>
-    </div>
-    <div class="mkt-sec" id="csec-us">
+    <div class="mkt-sec active" id="csec-us">
       <div class="compare-section">
         <div class="chart-card">
           <div class="chart-title">総合スコア比較（10点満点）</div>
@@ -476,7 +441,7 @@ let selIdx={jp:0,us:0};
 let raAllCharts={jp:null,us:null};
 let pcCharts={};
 let compareChartsBuilt={jp:false,us:false};
-let curMkt='jp';
+let curMkt='us';
 let curPage='rank';
 
 // SBI証券リンク
@@ -525,18 +490,8 @@ function switchPage(p){
   }
 }
 
-// マーケット切り替え
-function switchMkt(m){
-  curMkt=m;
-  ['jp','us'].forEach(x=>{
-    document.getElementById('tab-'+x).classList.toggle('active',x===m);
-    document.getElementById('sec-'+x)?.classList.toggle('active',x===m);
-    document.getElementById('csec-'+x)?.classList.toggle('active',x===m);
-  });
-  if(curPage==='chart' && !compareChartsBuilt[m]){
-    setTimeout(()=>buildCompareCharts(m),50);
-  }
-}
+// マーケット切り替え（米国株のみ）
+function switchMkt(m){ curMkt='us'; }
 
 // 銘柄選択
 function selStock(mkt,i){
@@ -898,9 +853,7 @@ function buildCompareCharts(mkt){
 // 初期化
 function init(){
   if(typeof reportDate!=='undefined') document.getElementById('hdr-date').textContent=reportDate;
-  buildCards('jp');
   buildCards('us');
-  renderDet('jp',0);
   renderDet('us',0);
 }
 init();
