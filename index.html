@@ -2,223 +2,405 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CANSLIM スクリーニングレポート 2026/02/20</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0d1117">
+<title>CANSLIM レポート</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-:root {
-  --bg:#0f1117; --card:#1a1d2e; --card2:#222540; --accent:#6c63ff;
-  --accent2:#00d4aa; --accent3:#ff6b6b; --accent4:#ffd166;
-  --text:#e8eaf6; --text2:#9ea3c0; --border:#2e3250;
-  --green:#00d4aa; --red:#ff6b6b; --gold:#ffd166; --blue:#4fc3f7;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:'Segoe UI','Noto Sans JP',sans-serif;min-height:100vh;}
-::-webkit-scrollbar{width:6px;height:6px;}
-::-webkit-scrollbar-track{background:var(--bg);}
-::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+  :root{
+    --bg:#0d1117;
+    --card:#161b22;
+    --card2:#1c2128;
+    --border:#30363d;
+    --text1:#e6edf3;
+    --text2:#8b949e;
+    --accent:#6c63ff;
+    --green:#3fb950;
+    --red:#f85149;
+    --gold:#d29922;
+    --orange:#ff6600;
+    --blue:#58a6ff;
+    --radius:14px;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;background:var(--bg);color:var(--text1);font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif;overflow-x:hidden;}
 
-/* Header */
-.hdr{background:linear-gradient(135deg,#1a1d2e,#0f1117);border-bottom:1px solid var(--border);padding:20px 32px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
-.hdr-l h1{font-size:1.5rem;font-weight:700;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hdr-l p{color:var(--text2);font-size:.85rem;margin-top:4px;}
-.hdr-r{display:flex;gap:10px;flex-wrap:wrap;}
-.badge{background:var(--card2);border:1px solid var(--border);padding:6px 14px;border-radius:20px;font-size:.78rem;color:var(--text2);}
-.badge b{color:var(--accent2);}
+  /* ── ヘッダー ── */
+  .app-header{
+    position:sticky;top:0;z-index:100;
+    background:rgba(13,17,23,0.92);
+    backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);
+    padding:calc(var(--safe-top) + 10px) 16px 10px;
+  }
+  .header-top{display:flex;align-items:center;justify-content:space-between;}
+  .app-title{font-size:1.05rem;font-weight:700;letter-spacing:.5px;}
+  .app-title span{color:var(--accent);}
+  .header-date{font-size:.7rem;color:var(--text2);background:var(--card2);padding:3px 8px;border-radius:20px;border:1px solid var(--border);}
 
-/* Market Tabs */
-.mkt-tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);padding:0 32px;}
-.mkt-tab{padding:14px 28px;cursor:pointer;font-size:.95rem;font-weight:600;color:var(--text2);border-bottom:3px solid transparent;transition:all .2s;}
-.mkt-tab:hover{color:var(--text);}
-.mkt-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
-.mkt-tab.active.us{color:var(--accent2);border-bottom-color:var(--accent2);}
+  /* ── マーケットタブ ── */
+  .mkt-tabs{display:flex;gap:8px;margin-top:10px;}
+  .mkt-tab{
+    flex:1;padding:8px 0;border-radius:10px;border:1.5px solid var(--border);
+    background:transparent;color:var(--text2);font-size:.82rem;font-weight:600;
+    cursor:pointer;transition:all .2s;
+  }
+  .mkt-tab.active{background:var(--accent);border-color:var(--accent);color:#fff;}
 
-/* Main */
-.main{max-width:1400px;margin:0 auto;padding:24px 32px;}
-.sec-title{font-size:1.05rem;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
-.sec-title::before{content:'';display:block;width:4px;height:20px;background:var(--accent);border-radius:2px;}
-.sec-title.us::before{background:var(--accent2);}
+  /* ── メインコンテンツ ── */
+  .main{padding:12px 12px calc(var(--safe-bottom) + 70px);}
 
-/* Summary Cards */
-.s-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-bottom:28px;}
-.s-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;}
-.s-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
-.s-card.us::before{background:linear-gradient(90deg,var(--accent2),var(--blue));}
-.s-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,99,255,.2);}
-.s-card.us:hover{border-color:var(--accent2);box-shadow:0 8px 24px rgba(0,212,170,.2);}
-.s-card.sel{border-color:var(--accent);background:var(--card2);}
-.s-card.us.sel{border-color:var(--accent2);}
-.s-rank{position:absolute;top:10px;right:10px;width:26px;height:26px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;}
-.s-card.us .s-rank{background:var(--accent2);color:#000;}
-.s-code{font-size:.72rem;color:var(--text2);margin-bottom:3px;}
-.s-name{font-size:.95rem;font-weight:700;margin-bottom:3px;}
-.s-mkt{font-size:.72rem;color:var(--text2);margin-bottom:10px;}
-.s-price{font-size:1.2rem;font-weight:700;}
-.s-chg{font-size:.82rem;color:var(--green);font-weight:600;}
-.s-bar-lbl{display:flex;justify-content:space-between;font-size:.72rem;color:var(--text2);margin-top:10px;margin-bottom:3px;}
-.s-bar-tr{height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
-.s-bar-fl{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .8s;}
+  /* ── セクションタイトル ── */
+  .sec-title{font-size:.75rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin:18px 0 8px;padding-left:4px;}
 
-/* Charts Row */
-.ch-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:28px;}
-.ch-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px;}
-.ch-title{font-size:.85rem;font-weight:600;color:var(--text2);margin-bottom:14px;}
-.ch-wrap{position:relative;height:250px;}
+  /* ── 銘柄カード（横スクロール） ── */
+  .cards-scroll{
+    display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;
+    -webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  .cards-scroll::-webkit-scrollbar{display:none;}
+  .s-card{
+    flex:0 0 200px;scroll-snap-align:start;
+    background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+    padding:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;
+  }
+  .s-card.sel{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent);}
+  .s-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--accent);opacity:0;}
+  .s-card.sel::before{opacity:1;}
+  .s-card.us::before{background:var(--blue);}
+  .s-card.us.sel{border-color:var(--blue);box-shadow:0 0 0 1px var(--blue);}
+  .card-rank{font-size:.65rem;color:var(--text2);margin-bottom:4px;}
+  .card-code{font-size:.72rem;color:var(--accent);font-weight:700;margin-bottom:2px;}
+  .s-card.us .card-code{color:var(--blue);}
+  .card-name{font-size:.88rem;font-weight:700;line-height:1.3;margin-bottom:4px;}
+  .card-sector{font-size:.65rem;color:var(--text2);margin-bottom:8px;line-height:1.3;}
+  .card-price{font-size:1.1rem;font-weight:700;margin-bottom:2px;}
+  .card-chg{font-size:.72rem;color:var(--green);font-weight:600;margin-bottom:8px;}
+  .card-score-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .card-score-lbl{font-size:.62rem;color:var(--text2);}
+  .card-score-val{font-size:.82rem;font-weight:700;color:var(--gold);}
+  .card-bar-bg{height:4px;background:var(--border);border-radius:2px;}
+  .card-bar-fill{height:4px;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:2px;transition:width .5s;}
+  .s-card.us .card-bar-fill{background:linear-gradient(90deg,var(--blue),var(--green));}
 
-/* Detail */
-.det{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:28px;}
-.det-hdr{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--border);}
-.det-name{font-size:1.3rem;font-weight:700;}
-.det-meta{font-size:.82rem;color:var(--text2);margin-top:3px;}
-.det-pr{font-size:1.9rem;font-weight:700;}
-.det-chg{font-size:.95rem;color:var(--green);font-weight:600;}
-.det-sc{font-size:.9rem;color:var(--text2);margin-top:3px;}
-.det-sc b{font-size:1.4rem;font-weight:700;color:var(--gold);}
+  /* SBIボタン（カード内） */
+  .sbi-btn-card{
+    display:flex;align-items:center;justify-content:center;gap:5px;
+    margin-top:10px;padding:7px 0;border-radius:8px;
+    background:linear-gradient(135deg,#ff6600,#ff8c00);
+    color:#fff;font-size:.72rem;font-weight:700;text-decoration:none;
+    transition:all .2s;
+  }
+  .sbi-btn-card:active{transform:scale(0.97);opacity:.9;}
+  .sbi-btn-card svg{width:11px;height:11px;}
 
-/* CANSLIM Grid */
-.cs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px;margin-bottom:20px;}
-.cs-item{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;}
-.cs-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px;}
-.cs-ltr{font-size:1.1rem;font-weight:700;color:var(--accent);width:26px;height:26px;border-radius:6px;background:rgba(108,99,255,.15);display:flex;align-items:center;justify-content:center;}
-.us .cs-ltr{color:var(--accent2);background:rgba(0,212,170,.15);}
-.cs-lbl{font-size:.77rem;color:var(--text2);flex:1;margin-left:7px;}
-.cs-sc{font-size:.95rem;font-weight:700;color:var(--gold);}
-.cs-bar-tr{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:7px;}
-.cs-bar-fl{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
-.cs-cmt{font-size:.76rem;color:var(--text2);line-height:1.5;}
+  /* ── 詳細パネル ── */
+  .det-panel{
+    background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;margin-top:4px;
+  }
+  .det-hero{
+    padding:16px;
+    background:linear-gradient(135deg,rgba(108,99,255,.12),rgba(63,185,80,.06));
+    border-bottom:1px solid var(--border);
+  }
+  .det-hero-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .det-code{font-size:.72rem;color:var(--accent);font-weight:700;}
+  .det-name{font-size:1.05rem;font-weight:700;margin-top:2px;line-height:1.3;}
+  .det-meta{font-size:.68rem;color:var(--text2);margin-top:3px;}
+  .det-price-box{text-align:right;}
+  .det-price{font-size:1.3rem;font-weight:700;}
+  .det-chg{font-size:.78rem;color:var(--green);font-weight:600;}
+  .det-score-badge{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(210,153,34,.15);border:1px solid rgba(210,153,34,.4);
+    color:var(--gold);font-size:.78rem;font-weight:700;
+    padding:4px 10px;border-radius:20px;margin-top:8px;
+  }
 
-/* Entry */
-.ent-sec{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
-.ent-title{font-size:.95rem;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
-.ent-dot{width:7px;height:7px;border-radius:50%;background:var(--gold);}
-.ent-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px;margin-bottom:14px;}
-.ent-card{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:12px;border-left:3px solid var(--gold);}
-.ent-lbl{font-size:.77rem;font-weight:700;color:var(--gold);margin-bottom:5px;}
-.ent-pr{font-size:1.05rem;font-weight:700;margin-bottom:3px;}
-.ent-rng{font-size:.75rem;color:var(--text2);margin-bottom:5px;}
-.ent-tm{font-size:.75rem;color:var(--text2);line-height:1.4;}
-.ent-rr{font-size:.75rem;color:var(--accent2);font-weight:600;margin-top:5px;}
-.tgt-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;}
-.tgt-item{background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;flex:1;min-width:140px;}
-.tgt-lbl{font-size:.72rem;color:var(--text2);margin-bottom:3px;}
-.tgt-val{font-size:.95rem;font-weight:700;}
-.tgt-val.g{color:var(--green);}
-.tgt-val.r{color:var(--red);}
-.tgt-val.b{color:var(--blue);}
-.tgt-val.gd{color:var(--gold);}
-.tgt-sub{font-size:.68rem;color:var(--text2);margin-top:3px;}
+  /* SBIボタン（詳細パネル内） */
+  .sbi-btn-det{
+    display:flex;align-items:center;justify-content:center;gap:6px;
+    padding:11px 0;border-radius:10px;margin-top:12px;
+    background:linear-gradient(135deg,#ff6600,#ff8c00);
+    color:#fff;font-size:.85rem;font-weight:700;text-decoration:none;
+    transition:all .2s;
+  }
+  .sbi-btn-det:active{transform:scale(0.98);opacity:.9;}
+  .sbi-btn-det svg{width:14px;height:14px;}
 
-/* Price Chart */
-.pc-sec{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
-.pc-wrap{position:relative;height:270px;}
+  /* ── タブナビ（詳細内） ── */
+  .det-tabs{display:flex;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+  .det-tabs::-webkit-scrollbar{display:none;}
+  .det-tab{
+    flex:0 0 auto;padding:10px 16px;font-size:.78rem;font-weight:600;
+    color:var(--text2);border-bottom:2px solid transparent;cursor:pointer;
+    white-space:nowrap;transition:all .2s;
+  }
+  .det-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
 
-/* Radar */
-.rad-sec{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:28px;}
-.rad-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px;}
-.rad-wrap{position:relative;height:300px;}
+  /* ── タブコンテンツ ── */
+  .det-content{display:none;padding:14px;}
+  .det-content.active{display:block;}
 
-/* Score Summary Table */
-.score-summary{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px;}
-.score-summary-title{font-size:.85rem;font-weight:700;color:var(--text2);margin-bottom:12px;letter-spacing:.05em;text-transform:uppercase;}
-.score-table{width:100%;border-collapse:collapse;}
-.score-table th{font-size:.72rem;color:var(--text2);font-weight:600;padding:6px 10px;text-align:center;border-bottom:1px solid var(--border);}
-.score-table th:first-child{text-align:left;}
-.score-table td{padding:8px 10px;text-align:center;border-bottom:1px solid rgba(46,50,80,.5);font-size:.82rem;}
-.score-table td:first-child{text-align:left;font-size:.75rem;color:var(--text2);}
-.score-table tr:last-child td{border-bottom:none;}
-.score-table .score-key{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:5px;background:rgba(108,99,255,.2);color:var(--accent);font-weight:700;font-size:.8rem;margin-right:6px;}
-.score-table.us .score-key{background:rgba(0,212,170,.2);color:var(--accent2);}
-.score-num{font-weight:700;font-size:.92rem;}
-.score-pip-row{display:flex;justify-content:center;gap:2px;margin-top:3px;}
-.score-pip{width:7px;height:7px;border-radius:50%;background:var(--border);}
-.score-pip.on{background:var(--gold);}
-.total-row td{background:rgba(108,99,255,.08);font-weight:700;}
-.total-row .total-score-val{font-size:1.1rem;font-weight:700;color:var(--gold);}
-.score-bar-mini{width:60px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;display:inline-block;vertical-align:middle;margin-left:6px;}
-.score-bar-mini-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));}
+  /* スコアテーブル */
+  .score-table{width:100%;border-collapse:collapse;}
+  .score-table th{font-size:.65rem;color:var(--text2);text-align:left;padding:6px 4px;border-bottom:1px solid var(--border);}
+  .score-table td{padding:7px 4px;border-bottom:1px solid rgba(48,54,61,.5);vertical-align:middle;}
+  .score-key{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:6px;font-size:.72rem;font-weight:700;background:var(--accent);color:#fff;flex-shrink:0;}
+  .score-label{font-size:.72rem;color:var(--text1);margin-left:6px;}
+  .score-num{font-size:.88rem;font-weight:700;text-align:right;white-space:nowrap;}
+  .score-dots{display:flex;gap:2px;align-items:center;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--border);}
+  .dot.on{background:var(--green);}
+  .dot.on.hi{background:var(--gold);}
+  .dot.on.lo{background:var(--red);}
+  .score-bar-bg{height:3px;background:var(--border);border-radius:2px;width:50px;}
+  .score-bar-fill{height:3px;border-radius:2px;}
+  .total-row td{background:rgba(108,99,255,.08);font-weight:700;}
+  .total-row .score-num{color:var(--gold);font-size:1rem;}
 
-/* Disclaimer */
-.disc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:20px;}
-.disc p{font-size:.72rem;color:var(--text2);line-height:1.6;}
+  /* CANSLIM詳細カード */
+  .cs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .cs-item{background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:10px;}
+  .cs-item-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+  .cs-key-badge{font-size:.68rem;font-weight:700;color:var(--accent);}
+  .cs-score{font-size:.88rem;font-weight:700;}
+  .cs-lbl{font-size:.68rem;color:var(--text2);margin-bottom:4px;}
+  .cs-comment{font-size:.68rem;color:var(--text1);line-height:1.5;}
 
-/* SBI Button */
-.sbi-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#ff6600,#ff8c00);color:#fff;font-size:.75rem;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
-.sbi-btn:hover{background:linear-gradient(135deg,#e55a00,#e67e00);transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,102,0,.4);}
-.sbi-btn svg{width:12px;height:12px;flex-shrink:0;}
-.sbi-btn-wrap{margin-top:8px;}
+  /* 押し目買い */
+  .entry-cards{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+  .entry-card{background:var(--card2);border-radius:10px;padding:12px;border-left:3px solid var(--green);}
+  .entry-card:nth-child(2){border-left-color:var(--gold);}
+  .entry-card:nth-child(3){border-left-color:var(--accent);}
+  .entry-label{font-size:.68rem;color:var(--text2);margin-bottom:4px;}
+  .entry-price{font-size:1.2rem;font-weight:700;color:var(--green);}
+  .entry-card:nth-child(2) .entry-price{color:var(--gold);}
+  .entry-card:nth-child(3) .entry-price{color:var(--accent);}
+  .entry-range{font-size:.7rem;color:var(--text2);margin-top:2px;}
+  .entry-timing{font-size:.7rem;color:var(--text1);margin-top:4px;line-height:1.4;}
+  .entry-rr{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:rgba(63,185,80,.12);border:1px solid rgba(63,185,80,.3);color:var(--green);font-size:.68rem;font-weight:700;padding:2px 8px;border-radius:20px;}
 
-/* Market section */
-.mkt-sec{display:none;}
-.mkt-sec.active{display:block;}
+  /* 損切り・目標 */
+  .trade-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .trade-meta-item{background:var(--card2);border-radius:10px;padding:10px;}
+  .trade-meta-lbl{font-size:.62rem;color:var(--text2);margin-bottom:4px;}
+  .trade-meta-val{font-size:.95rem;font-weight:700;}
+  .trade-meta-val.red{color:var(--red);}
+  .trade-meta-val.green{color:var(--green);}
+  .trade-meta-sub{font-size:.62rem;color:var(--text2);margin-top:2px;line-height:1.3;}
+  .ma-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px;}
+  .ma-item{background:var(--card2);border-radius:8px;padding:8px;text-align:center;}
+  .ma-lbl{font-size:.6rem;color:var(--text2);margin-bottom:3px;}
+  .ma-val{font-size:.82rem;font-weight:700;}
 
-@media(max-width:768px){
-  .main{padding:14px;}
-  .ch-row{grid-template-columns:1fr;}
-  .rad-grid{grid-template-columns:1fr;}
-  .hdr{padding:14px;}
-  .mkt-tabs{padding:0 14px;}
-}
+  /* チャート */
+  .chart-wrap{position:relative;height:220px;margin-top:10px;}
+  canvas{border-radius:8px;}
+
+  /* ── 比較チャートセクション ── */
+  .compare-section{margin-top:4px;}
+  .chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:10px;}
+  .chart-title{font-size:.78rem;font-weight:700;color:var(--text2);margin-bottom:10px;}
+  .chart-h200{position:relative;height:200px;}
+  .chart-h240{position:relative;height:240px;}
+
+  /* ── 解説セクション ── */
+  .explain-section{margin-top:4px;}
+  .explain-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:10px;}
+  .explain-title{font-size:.92rem;font-weight:700;margin-bottom:12px;color:var(--blue);}
+  .explain-item{display:flex;gap:10px;margin-bottom:12px;align-items:flex-start;}
+  .explain-key{flex:0 0 28px;height:28px;border-radius:8px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:#fff;}
+  .explain-body{}
+  .explain-name{font-size:.78rem;font-weight:700;margin-bottom:2px;}
+  .explain-desc{font-size:.7rem;color:var(--text2);line-height:1.5;}
+
+  /* ── 免責 ── */
+  .disc{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:12px;margin-top:10px;}
+  .disc p{font-size:.65rem;color:var(--text2);line-height:1.6;}
+
+  /* ── ボトムナビ ── */
+  .bottom-nav{
+    position:fixed;bottom:0;left:0;right:0;z-index:100;
+    background:rgba(13,17,23,0.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-top:1px solid var(--border);
+    display:flex;
+    padding-bottom:var(--safe-bottom);
+  }
+  .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;padding:8px 0;cursor:pointer;color:var(--text2);font-size:.6rem;gap:3px;transition:color .2s;}
+  .nav-item.active{color:var(--accent);}
+  .nav-item svg{width:20px;height:20px;}
+
+  /* ── セクション切り替え ── */
+  .page-sec{display:none;}
+  .page-sec.active{display:block;}
+
+  /* ── ユーティリティ ── */
+  .mkt-sec{display:none;}
+  .mkt-sec.active{display:block;}
+  .tag{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:20px;background:rgba(108,99,255,.15);color:var(--accent);border:1px solid rgba(108,99,255,.3);}
+  .tag.us{background:rgba(88,166,255,.15);color:var(--blue);border-color:rgba(88,166,255,.3);}
+  .divider{height:1px;background:var(--border);margin:12px 0;}
 </style>
 </head>
 <body>
 
-<div class="hdr">
-  <div class="hdr-l">
-    <h1>CANSLIM スクリーニングレポート</h1>
-    <p>52週高値更新銘柄 × CANSLIM分析 | 2026年2月20日</p>
+<!-- ヘッダー -->
+<div class="app-header">
+  <div class="header-top">
+    <div class="app-title"><span>CANSLIM</span> レポート</div>
+    <div class="header-date" id="hdr-date">2026/02/20</div>
   </div>
-  <div class="hdr-r">
-    <div class="badge">国内スクリーニング <b>107銘柄</b> → 上位5銘柄</div>
-    <div class="badge">米国スクリーニング <b>472銘柄</b> → 上位5銘柄</div>
-    <div class="badge">分析日 <b>2026/02/20</b></div>
+  <div class="mkt-tabs">
+    <button class="mkt-tab active" id="tab-jp" onclick="switchMkt('jp')">🇯🇵 国内株</button>
+    <button class="mkt-tab" id="tab-us" onclick="switchMkt('us')">🇺🇸 米国株</button>
   </div>
 </div>
 
-<div class="mkt-tabs">
-  <div class="mkt-tab active" id="tab-jp" onclick="switchMkt('jp')">🇯🇵 国内株（東証）</div>
-  <div class="mkt-tab" id="tab-us" onclick="switchMkt('us')">🇺🇸 米国株（NYSE/NASDAQ）</div>
-</div>
-
+<!-- メイン -->
 <div class="main">
 
-  <!-- JP -->
-  <div class="mkt-sec active" id="sec-jp">
-    <div class="sec-title">国内 CANSLIM 上位5銘柄 — 東証プライム・スタンダード・グロース</div>
-    <div class="s-grid" id="jp-cards"></div>
-    <div class="ch-row">
-      <div class="ch-card"><div class="ch-title">総合スコア比較（10点満点）</div><div class="ch-wrap"><canvas id="jp-sc"></canvas></div></div>
-      <div class="ch-card"><div class="ch-title">EPS成長率 vs 株価年間変化率（バブルサイズ＝時価総額）</div><div class="ch-wrap"><canvas id="jp-bb"></canvas></div></div>
+  <!-- ランキングページ -->
+  <div class="page-sec active" id="page-rank">
+
+    <!-- 国内 -->
+    <div class="mkt-sec active" id="sec-jp">
+      <div class="sec-title">国内 上位5銘柄 — 東証プライム・スタンダード・グロース</div>
+      <div class="cards-scroll" id="cards-jp"></div>
+      <div class="sec-title" style="margin-top:20px;">選択銘柄の詳細</div>
+      <div class="det-panel" id="det-jp"></div>
     </div>
-    <div class="det" id="jp-det"></div>
-    <div class="rad-sec">
-      <div class="sec-title">CANSLIMレーダーチャート比較</div>
-      <div class="rad-grid">
-        <div><div class="ch-title">全銘柄比較</div><div class="rad-wrap"><canvas id="jp-ra-all"></canvas></div></div>
-        <div><div class="ch-title">選択銘柄の詳細</div><div class="rad-wrap"><canvas id="jp-ra-one"></canvas></div></div>
+
+    <!-- 米国 -->
+    <div class="mkt-sec" id="sec-us">
+      <div class="sec-title">米国 上位5銘柄 — NYSE / NASDAQ</div>
+      <div class="cards-scroll" id="cards-us"></div>
+      <div class="sec-title" style="margin-top:20px;">選択銘柄の詳細</div>
+      <div class="det-panel" id="det-us"></div>
+    </div>
+
+  </div>
+
+  <!-- 比較チャートページ -->
+  <div class="page-sec" id="page-chart">
+    <div class="mkt-sec active" id="csec-jp">
+      <div class="compare-section">
+        <div class="chart-card">
+          <div class="chart-title">総合スコア比較（10点満点）</div>
+          <div class="chart-h200"><canvas id="jp-sc"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">EPS成長率 vs 株価変化率</div>
+          <div class="chart-h240"><canvas id="jp-bb"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">CANSLIMレーダー比較</div>
+          <div class="chart-h240"><canvas id="jp-ra-all"></canvas></div>
+        </div>
+      </div>
+    </div>
+    <div class="mkt-sec" id="csec-us">
+      <div class="compare-section">
+        <div class="chart-card">
+          <div class="chart-title">総合スコア比較（10点満点）</div>
+          <div class="chart-h200"><canvas id="us-sc"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">EPS成長率 vs 株価変化率</div>
+          <div class="chart-h240"><canvas id="us-bb"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">CANSLIMレーダー比較</div>
+          <div class="chart-h240"><canvas id="us-ra-all"></canvas></div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- US -->
-  <div class="mkt-sec" id="sec-us">
-    <div class="sec-title us">米国 CANSLIM 上位5銘柄 — NYSE / NASDAQ</div>
-    <div class="s-grid" id="us-cards"></div>
-    <div class="ch-row">
-      <div class="ch-card"><div class="ch-title">総合スコア比較（10点満点）</div><div class="ch-wrap"><canvas id="us-sc"></canvas></div></div>
-      <div class="ch-card"><div class="ch-title">EPS成長率 vs 株価年間変化率（バブルサイズ＝時価総額）</div><div class="ch-wrap"><canvas id="us-bb"></canvas></div></div>
-    </div>
-    <div class="det" id="us-det"></div>
-    <div class="rad-sec">
-      <div class="sec-title us">CANSLIMレーダーチャート比較</div>
-      <div class="rad-grid">
-        <div><div class="ch-title">全銘柄比較</div><div class="rad-wrap"><canvas id="us-ra-all"></canvas></div></div>
-        <div><div class="ch-title">選択銘柄の詳細</div><div class="rad-wrap"><canvas id="us-ra-one"></canvas></div></div>
+  <!-- 解説ページ -->
+  <div class="page-sec" id="page-info">
+    <div class="explain-section">
+      <div class="explain-card">
+        <div class="explain-title">📘 CANSLIM 投資手法とは</div>
+        <p style="font-size:.72rem;color:var(--text2);line-height:1.6;margin-bottom:12px;">ウィリアム・オニールが開発した成長株投資の7つの基準。52週高値更新銘柄の中から、業績・需給・市場環境の全てが揃った銘柄を選出する手法。</p>
+        <div class="divider"></div>
+        <div class="explain-item">
+          <div class="explain-key">C</div>
+          <div class="explain-body">
+            <div class="explain-name">Current Quarterly EPS — 当期四半期EPS成長率</div>
+            <div class="explain-desc">直近四半期のEPS（1株利益）が前年同期比で25%以上増加していること。最低でも+25%、理想は+50%以上。</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-key">A</div>
+          <div class="explain-body">
+            <div class="explain-name">Annual EPS Growth — 年間EPS成長率</div>
+            <div class="explain-desc">過去3〜5年の年間EPS成長率が25%以上。直近3年連続で増益していることが理想。</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-key">N</div>
+          <div class="explain-body">
+            <div class="explain-name">New Products / New High — 新製品・新高値</div>
+            <div class="explain-desc">新製品・新サービス・新経営陣・業界の変化など「N」のある銘柄。株価が52週高値を更新していること。</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-key">S</div>
+          <div class="explain-body">
+            <div class="explain-name">Supply & Demand — 需給</div>
+            <div class="explain-desc">発行済み株式数が少なく（小型株優位）、出来高を伴った上昇が理想。信用倍率・浮動株比率も確認。</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-key">L</div>
+          <div class="explain-body">
+            <div class="explain-name">Leader or Laggard — 業界リーダー</div>
+            <div class="explain-desc">業界内でRSI（相対強度）が上位25%以内の銘柄を選ぶ。業界2番手・3番手は避ける。</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-key">I</div>
+          <div class="explain-body">
+            <div class="explain-name">Institutional Sponsorship — 機関投資家の支持</div>
+            <div class="explain-desc">優良な機関投資家（ファンド）が保有・買い増ししていること。ただし過剰保有は需給悪化の兆候。</div>
+          </div>
+        </div>
+        <div class="explain-item">
+          <div class="explain-key">M</div>
+          <div class="explain-body">
+            <div class="explain-name">Market Direction — 市場の方向性</div>
+            <div class="explain-desc">市場全体が上昇トレンドにあること。日経平均・S&P500の方向性を確認し、逆風時は買いを控える。</div>
+          </div>
+        </div>
+      </div>
+      <div class="disc">
+        <p>⚠️ 本レポートは情報提供目的であり、投資勧誘ではありません。投資判断はご自身の責任でお願いします。株価・財務データは2026年2月20日時点の情報に基づいており、実際の数値と異なる場合があります。過去の業績は将来の結果を保証するものではありません。</p>
       </div>
     </div>
   </div>
 
-  <div class="disc">
-    <p>⚠️ 本レポートは情報提供のみを目的としており、投資勧誘または投資に関する助言を行うものではありません。投資の最終判断はご自身の責任でお願いします。株価・財務データは2026年2月20日時点の情報に基づいており、実際の数値と異なる場合があります。過去の業績は将来の結果を保証するものではありません。 / This report is for informational purposes only and does not constitute investment advice.</p>
+</div><!-- /main -->
+
+<!-- ボトムナビ -->
+<div class="bottom-nav">
+  <div class="nav-item active" id="nav-rank" onclick="switchPage('rank')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    ランキング
+  </div>
+  <div class="nav-item" id="nav-chart" onclick="switchPage('chart')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    比較チャート
+  </div>
+  <div class="nav-item" id="nav-info" onclick="switchPage('info')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    解説
   </div>
 </div>
 
@@ -226,313 +408,348 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI','Noto Sans JP
 <script>
 const COLORS=['#6c63ff','#00d4aa','#ffd166','#ff6b6b','#4fc3f7'];
 const CS_KEYS=['C','A','N','S','L','I','M'];
-const CS_LABELS={C:'C:当期EPS',A:'A:年間EPS',N:'N:新製品',S:'S:需給',L:'L:リーダー',I:'I:機関',M:'M:市場'};
 let selIdx={jp:0,us:0};
-let raOneChart={jp:null,us:null};
+let raAllCharts={jp:null,us:null};
 let pcCharts={};
+let compareChartsBuilt={jp:false,us:false};
+let curMkt='jp';
+let curPage='rank';
 
-// SBI証券リンク生成
-function sbiUrl(code, isUs){
+// SBI証券リンク
+function sbiUrl(code,isUs){
   if(isUs){
     return `https://www.sbisec.co.jp/ETGate/?OutSide=on&getFlg=on&_ControlID=WPLETsiR001Control&_PageID=WPLETsiR001Idtl31&_DataStoreID=DSWPLETsiR001Control&_ActionID=returnToStockPriceList&i_stock_sec=${code}&i_dom_flg=0&i_exchange_code=ALL&i_output_type=2`;
-  } else {
-    return `https://www.sbisec.co.jp/ETGate/?OutSide=on&getFlg=on&_ControlID=WPLETsiR001Control&_PageID=WPLETsiR001Iser10&_ActionID=clickToSearchStockPriceJP&_DataStoreID=DSWPLETsiR001Control&i_stock_sec=${code}&i_output_type=0`;
+  }
+  return `https://www.sbisec.co.jp/ETGate/?OutSide=on&getFlg=on&_ControlID=WPLETsiR001Control&_PageID=WPLETsiR001Iser10&_ActionID=clickToSearchStockPriceJP&_DataStoreID=DSWPLETsiR001Control&i_stock_sec=${code}&i_output_type=0`;
+}
+const SBI_SVG=`<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3L3 13M13 3H7M13 3V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
+function fmt(v,cur){
+  if(cur==='USD') return '$'+v.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  return v.toLocaleString('ja-JP')+'円';
+}
+
+function scoreColor(s){
+  if(s>=9) return '#3fb950';
+  if(s>=7) return '#d29922';
+  return '#f85149';
+}
+
+function buildDots(score){
+  let h='';
+  for(let i=1;i<=10;i++){
+    let cls='dot';
+    if(i<=score){
+      if(score>=9) cls+=' on hi';
+      else if(score>=7) cls+=' on';
+      else cls+=' on lo';
+    }
+    h+=`<div class="${cls}"></div>`;
+  }
+  return h;
+}
+
+// ページ切り替え
+function switchPage(p){
+  curPage=p;
+  ['rank','chart','info'].forEach(x=>{
+    document.getElementById('page-'+x).classList.toggle('active',x===p);
+    document.getElementById('nav-'+x).classList.toggle('active',x===p);
+  });
+  if(p==='chart' && !compareChartsBuilt[curMkt]){
+    setTimeout(()=>buildCompareCharts(curMkt),50);
   }
 }
-const SBI_ICON=`<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3L3 13M13 3H7M13 3V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
+// マーケット切り替え
 function switchMkt(m){
+  curMkt=m;
   ['jp','us'].forEach(x=>{
-    document.getElementById('sec-'+x).classList.toggle('active',x===m);
-    const t=document.getElementById('tab-'+x);
-    t.classList.toggle('active',x===m);
-    t.classList.toggle('us',x==='us'&&m==='us');
+    document.getElementById('tab-'+x).classList.toggle('active',x===m);
+    document.getElementById('sec-'+x)?.classList.toggle('active',x===m);
+    document.getElementById('csec-'+x)?.classList.toggle('active',x===m);
   });
+  if(curPage==='chart' && !compareChartsBuilt[m]){
+    setTimeout(()=>buildCompareCharts(m),50);
+  }
 }
 
-function fmt(p,cur){return cur==='JPY'?p.toLocaleString('ja-JP')+'円':'$'+p.toFixed(2);}
-function fmtEntry(p,cur){return cur==='JPY'?p.toLocaleString('ja-JP')+'円':'$'+p;}
+// 銘柄選択
+function selStock(mkt,i){
+  selIdx[mkt]=i;
+  document.querySelectorAll(`#cards-${mkt} .s-card`).forEach((c,j)=>c.classList.toggle('sel',j===i));
+  renderDet(mkt,i);
+}
 
-function renderCards(stocks,cid,mkt){
-  const c=document.getElementById(cid);
+// 銘柄カード描画
+function buildCards(mkt){
+  const stocks=mkt==='jp'?domesticStocks:usStocks;
+  const c=document.getElementById('cards-'+mkt);
   c.innerHTML='';
+  const isUs=mkt==='us';
   stocks.forEach((s,i)=>{
     const pct=(s.totalScore/10)*100;
     const d=document.createElement('div');
-    d.className='s-card'+(mkt==='us'?' us':'')+(i===0?' sel':'');
-    d.id='card-'+mkt+'-'+i;
-    const isUs=mkt==='us';
-    d.innerHTML=`<div class="s-rank">${s.rank}</div>
-<div class="s-code">${s.code} | ${s.market}</div>
-<div class="s-name">${s.name}</div>
-<div class="s-mkt">${s.sector}</div>
-<div class="s-price">${fmt(s.price,s.currency)}</div>
-<div class="s-chg">▲ ${s.change}</div>
-<div class="s-bar-lbl"><span>CANSLIM総合</span><span>${s.totalScore}/10</span></div>
-<div class="s-bar-tr"><div class="s-bar-fl" style="width:${pct}%"></div></div>
-<div class="sbi-btn-wrap"><a class="sbi-btn" href="${sbiUrl(s.code,isUs)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${SBI_ICON}SBI証券で見る</a></div>`;
+    d.className='s-card'+(isUs?' us':'')+(i===0?' sel':'');
+    d.innerHTML=`
+      <div class="card-rank">#${s.rank} ${s.market}</div>
+      <div class="card-code">${s.code}</div>
+      <div class="card-name">${s.name}</div>
+      <div class="card-sector">${s.sector}</div>
+      <div class="card-price">${fmt(s.price,s.currency)}</div>
+      <div class="card-chg">▲ ${s.change}</div>
+      <div class="card-score-row"><span class="card-score-lbl">CANSLIM総合</span><span class="card-score-val">${s.totalScore}/10</span></div>
+      <div class="card-bar-bg"><div class="card-bar-fill" style="width:${pct}%"></div></div>
+      <a class="sbi-btn-card" href="${sbiUrl(s.code,isUs)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${SBI_SVG}SBI証券で見る</a>
+    `;
     d.addEventListener('click',()=>selStock(mkt,i));
     c.appendChild(d);
   });
 }
 
-function selStock(mkt,idx){
-  selIdx[mkt]=idx;
+// 詳細パネル描画
+function renderDet(mkt,i){
   const stocks=mkt==='jp'?domesticStocks:usStocks;
-  stocks.forEach((_,i)=>{
-    const c=document.getElementById('card-'+mkt+'-'+i);
-    if(c){c.classList.toggle('sel',i===idx);}
-  });
-  renderDet(mkt,idx);
-  updateRaOne(mkt,idx);
-}
-
-function renderDet(mkt,idx){
-  const stocks=mkt==='jp'?domesticStocks:usStocks;
-  const s=stocks[idx];
+  const s=stocks[i];
   const isUs=mkt==='us';
-  const c=document.getElementById(mkt+'-det');
+  const c=document.getElementById('det-'+mkt);
 
-  // CANSLIM Score Summary Table
-  const CS_FULL_LABELS={C:'C — 当期EPS成長率',A:'A — 年間EPS成長率',N:'N — 新製品・新高値',S:'S — 需給',L:'L — 業界リーダー',I:'I — 機関投資家',M:'M — 市場方向性'};
-  const scorePips=(n)=>Array.from({length:10},(_,i)=>`<div class="score-pip${i<n?' on':''}"></div>`).join('');
-  const totalAvg=(Object.values(s.canslim).reduce((a,v)=>a+v.score,0)/7).toFixed(1);
-  const scoreTableHTML=`<div class="score-summary">
-<div class="score-summary-title">📊 CANSLIM 評価スコア一覧</div>
-<table class="score-table${isUs?' us':''}">
-<thead><tr>
-  <th>評価項目</th>
-  <th>スコア</th>
-  <th>10段階評価</th>
-  <th>バー</th>
-</tr></thead>
-<tbody>
-${CS_KEYS.map(k=>{
-  const it=s.canslim[k];
-  const color=it.score>=9?'var(--green)':it.score>=7?'var(--gold)':'var(--red)';
-  return `<tr>
-  <td><span class="score-key">${k}</span>${CS_FULL_LABELS[k]}</td>
-  <td><span class="score-num" style="color:${color}">${it.score}<span style="font-size:.7rem;color:var(--text2);font-weight:400">/10</span></span></td>
-  <td><div class="score-pip-row">${scorePips(it.score)}</div></td>
-  <td><div class="score-bar-mini"><div class="score-bar-mini-fill" style="width:${it.score*10}%"></div></div></td>
-</tr>`;
-}).join('')}
-<tr class="total-row">
-  <td style="color:var(--text);font-weight:700;">🏆 総合スコア（平均）</td>
-  <td colspan="3"><span class="total-score-val">${s.totalScore}</span><span style="font-size:.8rem;color:var(--text2);font-weight:400">/10</span>&nbsp;&nbsp;<span style="font-size:.75rem;color:var(--text2);">（各項目平均: ${totalAvg}）</span></td>
-</tr>
-</tbody>
-</table>
-</div>`;
+  // スコアテーブル
+  let scoreRows='';
+  CS_KEYS.forEach(k=>{
+    const sc=s.canslim[k].score;
+    const col=scoreColor(sc);
+    scoreRows+=`<tr>
+      <td><span class="score-key" style="background:${col}">${k}</span><span class="score-label">${s.canslim[k].label}</span></td>
+      <td><div class="score-dots">${buildDots(sc)}</div></td>
+      <td class="score-num" style="color:${col}">${sc}/10</td>
+    </tr>`;
+  });
+  const avg=(CS_KEYS.reduce((a,k)=>a+s.canslim[k].score,0)/7).toFixed(1);
 
-  const csHTML=CS_KEYS.map(k=>{
-    const it=s.canslim[k];
-    return `<div class="cs-item">
-<div class="cs-hdr">
-  <div class="cs-ltr ${isUs?'us':''}">${k}</div>
-  <div class="cs-lbl">${it.label}</div>
-  <div class="cs-sc">${it.score}/10</div>
-</div>
-<div class="cs-bar-tr"><div class="cs-bar-fl" style="width:${it.score*10}%"></div></div>
-<div class="cs-cmt">${it.comment}</div>
-</div>`;
-  }).join('');
+  // CANSLIM詳細
+  let csHTML='';
+  CS_KEYS.forEach(k=>{
+    const sc=s.canslim[k].score;
+    const col=scoreColor(sc);
+    csHTML+=`<div class="cs-item">
+      <div class="cs-item-head"><span class="cs-key-badge" style="color:${col}">${k} — ${s.canslim[k].label}</span><span class="cs-score" style="color:${col}">${sc}/10</span></div>
+      <div class="cs-comment">${s.canslim[k].comment}</div>
+    </div>`;
+  });
 
-  const epColors=['#ffd166','#ff9f43','#ff6b6b'];
-  const epHTML=s.entryPoints.map((ep,i)=>`<div class="ent-card" style="border-left-color:${epColors[i]}">
-<div class="ent-lbl">${ep.label}</div>
-<div class="ent-pr">${fmtEntry(ep.price,s.currency)}</div>
-<div class="ent-rng">指値レンジ: ${ep.range}</div>
-<div class="ent-tm">${ep.timing}</div>
-<div class="ent-rr">リスクリワード比: ${ep.riskReward}:1</div>
-</div>`).join('');
+  // 押し目買い
+  let entryHTML='';
+  s.entryPoints.forEach(ep=>{
+    entryHTML+=`<div class="entry-card">
+      <div class="entry-label">${ep.label}</div>
+      <div class="entry-price">${fmt(ep.price,s.currency)}</div>
+      <div class="entry-range">指値レンジ: ${ep.range}</div>
+      <div class="entry-timing">${ep.timing}</div>
+      <div class="entry-rr">RR比 ${ep.riskReward}:1</div>
+    </div>`;
+  });
 
-  c.innerHTML=`<div class="det-hdr">
-<div>
-  <div class="det-name">${s.code} | ${s.name}</div>
-  <div class="det-meta">${s.market} | ${s.sector}</div>
-  <div style="margin-top:10px"><a class="sbi-btn" href="${sbiUrl(s.code,isUs)}" target="_blank" rel="noopener">${SBI_ICON}SBI証券で詳細を見る</a></div>
-</div>
-<div style="text-align:right">
-  <div class="det-pr">${fmt(s.price,s.currency)}</div>
-  <div class="det-chg">▲ ${s.change}</div>
-  <div class="det-sc">CANSLIM総合: <b>${s.totalScore}</b>/10</div>
-</div>
-</div>
-${scoreTableHTML}
-<div class="sec-title ${isUs?'us':''}">CANSLIM 7基準 詳細評価（コメント付き）</div>
-<div class="cs-grid">${csHTML}</div>
-<div class="ent-sec">
-<div class="ent-title"><div class="ent-dot"></div>押し目買い戦略・指値</div>
-<div class="ent-grid">${epHTML}</div>
-<div class="tgt-row">
-  <div class="tgt-item"><div class="tgt-lbl">損切りライン</div><div class="tgt-val r">${fmtEntry(s.stopLoss.price,s.currency)}</div><div class="tgt-sub">${s.stopLoss.desc}</div></div>
-  <div class="tgt-item"><div class="tgt-lbl">目標株価</div><div class="tgt-val g">${fmtEntry(s.targetPrice,s.currency)}</div><div class="tgt-sub">${s.targetBasis}</div></div>
-  <div class="tgt-item"><div class="tgt-lbl">5日移動平均</div><div class="tgt-val b">${fmtEntry(s.ma5,s.currency)}</div></div>
-  <div class="tgt-item"><div class="tgt-lbl">25日移動平均</div><div class="tgt-val b">${fmtEntry(s.ma25,s.currency)}</div></div>
-  <div class="tgt-item"><div class="tgt-lbl">75日移動平均</div><div class="tgt-val b">${fmtEntry(s.ma75,s.currency)}</div></div>
-</div>
-</div>
-<div class="pc-sec">
-<div class="ent-title"><div class="ent-dot" style="background:var(--blue)"></div>株価推移チャート（移動平均線・押し目ゾーン）</div>
-<div class="pc-wrap"><canvas id="pc-${mkt}-${idx}"></canvas></div>
-</div>`;
+  c.innerHTML=`
+    <div class="det-hero">
+      <div class="det-hero-top">
+        <div>
+          <div class="det-code">${s.code} <span class="tag${isUs?' us':''}">${s.market}</span></div>
+          <div class="det-name">${s.name}</div>
+          <div class="det-meta">${s.sector}</div>
+        </div>
+        <div class="det-price-box">
+          <div class="det-price">${fmt(s.price,s.currency)}</div>
+          <div class="det-chg">▲ ${s.change}</div>
+        </div>
+      </div>
+      <div class="det-score-badge">🏆 CANSLIM総合 ${s.totalScore}/10</div>
+      <a class="sbi-btn-det" href="${sbiUrl(s.code,isUs)}" target="_blank" rel="noopener">${SBI_SVG}SBI証券アプリで詳細を見る</a>
+    </div>
+    <div class="det-tabs">
+      <div class="det-tab active" onclick="switchDetTab(this,'score','${mkt}')">スコア</div>
+      <div class="det-tab" onclick="switchDetTab(this,'canslim','${mkt}')">CANSLIM詳細</div>
+      <div class="det-tab" onclick="switchDetTab(this,'entry','${mkt}')">押し目買い</div>
+      <div class="det-tab" onclick="switchDetTab(this,'pcchart','${mkt}')">チャート</div>
+    </div>
+    <div class="det-content active" id="dc-score-${mkt}">
+      <table class="score-table">
+        <thead><tr><th>項目</th><th>10段階</th><th>点数</th></tr></thead>
+        <tbody>
+          ${scoreRows}
+          <tr class="total-row">
+            <td colspan="2" style="font-size:.78rem;color:var(--gold);">🏆 総合スコア（平均）</td>
+            <td class="score-num">${s.totalScore}/10<br><span style="font-size:.6rem;color:var(--text2)">平均 ${avg}</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="det-content" id="dc-canslim-${mkt}">
+      <div class="cs-grid">${csHTML}</div>
+    </div>
+    <div class="det-content" id="dc-entry-${mkt}">
+      <div class="entry-cards">${entryHTML}</div>
+      <div class="trade-meta">
+        <div class="trade-meta-item">
+          <div class="trade-meta-lbl">🛑 損切りライン</div>
+          <div class="trade-meta-val red">${fmt(s.stopLoss.price,s.currency)}</div>
+          <div class="trade-meta-sub">${s.stopLoss.desc}</div>
+        </div>
+        <div class="trade-meta-item">
+          <div class="trade-meta-lbl">🎯 目標株価</div>
+          <div class="trade-meta-val green">${fmt(s.targetPrice,s.currency)}</div>
+          <div class="trade-meta-sub">${s.targetBasis}</div>
+        </div>
+      </div>
+      <div class="ma-row">
+        <div class="ma-item"><div class="ma-lbl">5日MA</div><div class="ma-val">${fmt(s.ma5,s.currency)}</div></div>
+        <div class="ma-item"><div class="ma-lbl">25日MA</div><div class="ma-val">${fmt(s.ma25,s.currency)}</div></div>
+        <div class="ma-item"><div class="ma-lbl">75日MA</div><div class="ma-val">${fmt(s.ma75,s.currency)}</div></div>
+      </div>
+    </div>
+    <div class="det-content" id="dc-pcchart-${mkt}">
+      <div class="chart-wrap"><canvas id="pc-${mkt}-${i}"></canvas></div>
+    </div>
+  `;
 
-  setTimeout(()=>renderPc(mkt,idx,s),60);
+  // チャート描画（遅延）
+  setTimeout(()=>buildPcChart(mkt,i,s),80);
 }
 
-function renderPc(mkt,idx,s){
-  const cid='pc-'+mkt+'-'+idx;
-  const cv=document.getElementById(cid);
-  if(!cv)return;
-  const key=mkt+'-'+idx;
-  if(pcCharts[key]){pcCharts[key].destroy();}
-  const ctx=cv.getContext('2d');
-  pcCharts[key]=new Chart(ctx,{
+function switchDetTab(el,tab,mkt){
+  const panel=el.closest('.det-panel');
+  panel.querySelectorAll('.det-tab').forEach(t=>t.classList.remove('active'));
+  panel.querySelectorAll('.det-content').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  const dc=document.getElementById(`dc-${tab}-${mkt}`);
+  if(dc) dc.classList.add('active');
+  if(tab==='pcchart'){
+    const i=selIdx[mkt];
+    const s=(mkt==='jp'?domesticStocks:usStocks)[i];
+    setTimeout(()=>buildPcChart(mkt,i,s),80);
+  }
+}
+
+function buildPcChart(mkt,i,s){
+  const id=`pc-${mkt}-${i}`;
+  const cv=document.getElementById(id);
+  if(!cv) return;
+  if(pcCharts[id]){pcCharts[id].destroy();}
+  const isUs=mkt==='us';
+  const accentColor=isUs?'#58a6ff':'#6c63ff';
+  pcCharts[id]=new Chart(cv,{
     type:'line',
     data:{
       labels:s.chartData.labels,
       datasets:[
-        {label:'株価',data:s.chartData.prices,borderColor:'#6c63ff',backgroundColor:'rgba(108,99,255,.1)',borderWidth:2.5,pointRadius:3,fill:true,tension:.3},
-        {label:'5日MA',data:s.chartData.ma5,borderColor:'#ffd166',borderWidth:1.5,pointRadius:0,fill:false,tension:.3},
-        {label:'25日MA',data:s.chartData.ma25,borderColor:'#00d4aa',borderWidth:1.5,pointRadius:0,fill:false,tension:.3},
-        {label:'75日MA',data:s.chartData.ma75,borderColor:'#ff6b6b',borderWidth:1.5,pointRadius:0,fill:false,tension:.3}
+        {label:'株価',data:s.chartData.prices,borderColor:accentColor,backgroundColor:accentColor+'22',borderWidth:2.5,pointRadius:0,fill:true,tension:.3},
+        {label:'5日MA',data:s.chartData.ma5,borderColor:'#ff6b6b',borderWidth:1.5,pointRadius:0,fill:false,tension:.3,borderDash:[4,3]},
+        {label:'25日MA',data:s.chartData.ma25,borderColor:'#ffd166',borderWidth:1.5,pointRadius:0,fill:false,tension:.3,borderDash:[4,3]},
+        {label:'75日MA',data:s.chartData.ma75,borderColor:'#00d4aa',borderWidth:1.5,pointRadius:0,fill:false,tension:.3,borderDash:[4,3]},
       ]
     },
     options:{
       responsive:true,maintainAspectRatio:false,
+      interaction:{mode:'index',intersect:false},
       plugins:{
-        legend:{labels:{color:'#9ea3c0',font:{size:10}}},
-        tooltip:{backgroundColor:'#1a1d2e',borderColor:'#2e3250',borderWidth:1,titleColor:'#e8eaf6',bodyColor:'#9ea3c0'}
+        legend:{labels:{color:'#8b949e',font:{size:10},boxWidth:12,padding:8}},
+        tooltip:{backgroundColor:'#1c2128',titleColor:'#e6edf3',bodyColor:'#8b949e',borderColor:'#30363d',borderWidth:1}
       },
       scales:{
-        x:{ticks:{color:'#9ea3c0',font:{size:9}},grid:{color:'#2e3250'}},
-        y:{ticks:{color:'#9ea3c0',font:{size:9}},grid:{color:'#2e3250'}}
+        x:{ticks:{color:'#8b949e',font:{size:9},maxRotation:0},grid:{color:'#21262d'}},
+        y:{ticks:{color:'#8b949e',font:{size:9}},grid:{color:'#21262d'}}
       }
     }
   });
 }
 
-function renderScChart(stocks,cid,mkt){
-  const cv=document.getElementById(cid);
-  if(!cv)return;
-  new Chart(cv.getContext('2d'),{
-    type:'bar',
-    data:{
-      labels:stocks.map(s=>s.code),
-      datasets:[{
-        label:'総合スコア',
-        data:stocks.map(s=>s.totalScore),
-        backgroundColor:stocks.map((_,i)=>COLORS[i]+'cc'),
-        borderColor:stocks.map((_,i)=>COLORS[i]),
-        borderWidth:2,borderRadius:6
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{backgroundColor:'#1a1d2e',borderColor:'#2e3250',borderWidth:1,titleColor:'#e8eaf6',bodyColor:'#9ea3c0',callbacks:{label:c=>`スコア: ${c.raw}/10`}}
-      },
-      scales:{
-        x:{ticks:{color:'#9ea3c0'},grid:{color:'#2e3250'}},
-        y:{min:0,max:10,ticks:{color:'#9ea3c0'},grid:{color:'#2e3250'}}
-      },
-      onClick:(_,els)=>{if(els.length)selStock(mkt,els[0].index);}
-    }
-  });
-}
-
-const EPS_GROWTH={'7685':108.8,'5537':157,'6787':34.7,'5706':19,'5802':65.1,'VICR':1009,'RNG':178.37,'AXTI':100.98,'FIVN':390.08,'PRGS':7.67};
-const PRICE_CHG={'7685':68.16,'5537':60,'6787':105,'5706':95,'5802':103,'VICR':227.82,'RNG':28.37,'AXTI':1196.07,'FIVN':-53.66,'PRGS':-28.70};
-const MKT_CAP={'7685':191500,'5537':28800,'6787':80000,'5706':150000,'5802':300000,'VICR':7590,'RNG':3380,'AXTI':1640,'FIVN':1510,'PRGS':1700};
-
-function renderBbChart(stocks,cid,mkt){
-  const cv=document.getElementById(cid);
-  if(!cv)return;
-  const ds=stocks.map((s,i)=>({
-    label:s.code,
-    data:[{x:EPS_GROWTH[s.code]||20,y:PRICE_CHG[s.code]||10,r:Math.max(6,Math.min(28,Math.sqrt(MKT_CAP[s.code]||10000)/15))}],
-    backgroundColor:COLORS[i]+'88',borderColor:COLORS[i],borderWidth:2
-  }));
-  new Chart(cv.getContext('2d'),{
-    type:'bubble',data:{datasets:ds},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{
-        legend:{labels:{color:'#9ea3c0',font:{size:10}}},
-        tooltip:{backgroundColor:'#1a1d2e',borderColor:'#2e3250',borderWidth:1,titleColor:'#e8eaf6',bodyColor:'#9ea3c0',
-          callbacks:{label:c=>`${c.dataset.label}: EPS+${c.raw.x.toFixed(1)}%, 株価${c.raw.y>0?'+':''}${c.raw.y.toFixed(1)}%`}}
-      },
-      scales:{
-        x:{title:{display:true,text:'EPS成長率(%)',color:'#9ea3c0'},ticks:{color:'#9ea3c0'},grid:{color:'#2e3250'}},
-        y:{title:{display:true,text:'株価変化率(1年,%)' ,color:'#9ea3c0'},ticks:{color:'#9ea3c0'},grid:{color:'#2e3250'}}
-      }
-    }
-  });
-}
-
-function renderRaAll(stocks,cid){
-  const cv=document.getElementById(cid);
-  if(!cv)return;
-  const ds=stocks.map((s,i)=>({
-    label:s.code,
-    data:CS_KEYS.map(k=>s.canslim[k].score),
-    backgroundColor:COLORS[i]+'22',borderColor:COLORS[i],borderWidth:2,pointBackgroundColor:COLORS[i],pointRadius:3
-  }));
-  new Chart(cv.getContext('2d'),{
-    type:'radar',
-    data:{labels:CS_KEYS.map(k=>CS_LABELS[k]),datasets:ds},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#9ea3c0',font:{size:9}}}},
-      scales:{r:{min:0,max:10,ticks:{color:'#9ea3c0',backdropColor:'transparent',font:{size:8}},grid:{color:'#2e3250'},pointLabels:{color:'#9ea3c0',font:{size:9}},angleLines:{color:'#2e3250'}}}
-    }
-  });
-}
-
-function updateRaOne(mkt,idx){
+function buildCompareCharts(mkt){
+  if(compareChartsBuilt[mkt]) return;
   const stocks=mkt==='jp'?domesticStocks:usStocks;
-  const s=stocks[idx];
-  const cv=document.getElementById(mkt+'-ra-one');
-  if(!cv)return;
-  if(raOneChart[mkt]){raOneChart[mkt].destroy();}
-  raOneChart[mkt]=new Chart(cv.getContext('2d'),{
-    type:'radar',
-    data:{
-      labels:CS_KEYS.map(k=>CS_LABELS[k]),
-      datasets:[{
-        label:s.code,
-        data:CS_KEYS.map(k=>s.canslim[k].score),
-        backgroundColor:COLORS[idx]+'33',borderColor:COLORS[idx],borderWidth:2.5,
-        pointBackgroundColor:COLORS[idx],pointRadius:5
-      }]
-    },
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#9ea3c0'}}},
-      scales:{r:{min:0,max:10,ticks:{color:'#9ea3c0',backdropColor:'transparent',font:{size:8}},grid:{color:'#2e3250'},pointLabels:{color:'#e8eaf6',font:{size:10}},angleLines:{color:'#2e3250'}}}
-    }
-  });
+  const isUs=mkt==='us';
+  const accentColor=isUs?'#58a6ff':'#6c63ff';
+  const names=stocks.map(s=>s.code);
+  const scores=stocks.map(s=>s.totalScore);
+
+  // スコア棒グラフ
+  const scEl=document.getElementById(mkt+'-sc');
+  if(scEl){
+    new Chart(scEl,{
+      type:'bar',
+      data:{
+        labels:names,
+        datasets:[{label:'総合スコア',data:scores,backgroundColor:COLORS,borderRadius:8,borderSkipped:false}]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{display:false},tooltip:{backgroundColor:'#1c2128',titleColor:'#e6edf3',bodyColor:'#8b949e',borderColor:'#30363d',borderWidth:1}},
+        scales:{
+          x:{ticks:{color:'#8b949e',font:{size:10}},grid:{display:false}},
+          y:{min:0,max:10,ticks:{color:'#8b949e',font:{size:10}},grid:{color:'#21262d'}}
+        }
+      }
+    });
+  }
+
+  // バブルチャート
+  const bbEl=document.getElementById(mkt+'-bb');
+  if(bbEl){
+    const epsGrowth=[108.8,157,34.7,19,65.1];
+    const priceChg=[93.8,135.2,8.42,5.44,4.59];
+    if(isUs){epsGrowth.splice(0,5,1009,429,100,390,2240);priceChg.splice(0,5,11.23,34.4,24.65,12.46,10.74);}
+    new Chart(bbEl,{
+      type:'bubble',
+      data:{
+        datasets:stocks.map((s,i)=>({
+          label:s.code,
+          data:[{x:epsGrowth[i],y:priceChg[i],r:Math.max(6,s.totalScore*2.5)}],
+          backgroundColor:COLORS[i]+'88',borderColor:COLORS[i],borderWidth:2
+        }))
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:'#8b949e',font:{size:10},boxWidth:10}},tooltip:{backgroundColor:'#1c2128',titleColor:'#e6edf3',bodyColor:'#8b949e',borderColor:'#30363d',borderWidth:1}},
+        scales:{
+          x:{title:{display:true,text:'EPS成長率(%)',color:'#8b949e',font:{size:10}},ticks:{color:'#8b949e',font:{size:9}},grid:{color:'#21262d'}},
+          y:{title:{display:true,text:'株価変化率(%)',color:'#8b949e',font:{size:10}},ticks:{color:'#8b949e',font:{size:9}},grid:{color:'#21262d'}}
+        }
+      }
+    });
+  }
+
+  // レーダーチャート
+  const raEl=document.getElementById(mkt+'-ra-all');
+  if(raEl){
+    new Chart(raEl,{
+      type:'radar',
+      data:{
+        labels:['C','A','N','S','L','I','M'],
+        datasets:stocks.map((s,i)=>({
+          label:s.code,
+          data:CS_KEYS.map(k=>s.canslim[k].score),
+          borderColor:COLORS[i],backgroundColor:COLORS[i]+'22',borderWidth:1.5,pointRadius:3
+        }))
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        plugins:{legend:{labels:{color:'#8b949e',font:{size:10},boxWidth:10,padding:6}}},
+        scales:{r:{min:0,max:10,ticks:{stepSize:2,color:'#8b949e',font:{size:9},backdropColor:'transparent'},grid:{color:'#30363d'},pointLabels:{color:'#e6edf3',font:{size:11,weight:'bold'}}}}
+      }
+    });
+  }
+
+  compareChartsBuilt[mkt]=true;
 }
 
+// 初期化
 function init(){
-  renderCards(domesticStocks,'jp-cards','jp');
-  renderScChart(domesticStocks,'jp-sc','jp');
-  renderBbChart(domesticStocks,'jp-bb','jp');
+  if(typeof reportDate!=='undefined') document.getElementById('hdr-date').textContent=reportDate;
+  buildCards('jp');
+  buildCards('us');
   renderDet('jp',0);
-  renderRaAll(domesticStocks,'jp-ra-all');
-  updateRaOne('jp',0);
-
-  renderCards(usStocks,'us-cards','us');
-  renderScChart(usStocks,'us-sc','us');
-  renderBbChart(usStocks,'us-bb','us');
   renderDet('us',0);
-  renderRaAll(usStocks,'us-ra-all');
-  updateRaOne('us',0);
 }
-
-window.addEventListener('DOMContentLoaded',init);
+init();
 </script>
 </body>
 </html>
