@@ -141,6 +141,12 @@ body{background:var(--bg);color:var(--text);font-family:'Segoe UI','Noto Sans JP
 .disc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:14px 18px;margin-bottom:20px;}
 .disc p{font-size:.72rem;color:var(--text2);line-height:1.6;}
 
+/* SBI Button */
+.sbi-btn{display:inline-flex;align-items:center;gap:6px;background:linear-gradient(135deg,#ff6600,#ff8c00);color:#fff;font-size:.75rem;font-weight:700;padding:5px 12px;border-radius:6px;text-decoration:none;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.sbi-btn:hover{background:linear-gradient(135deg,#e55a00,#e67e00);transform:translateY(-1px);box-shadow:0 4px 12px rgba(255,102,0,.4);}
+.sbi-btn svg{width:12px;height:12px;flex-shrink:0;}
+.sbi-btn-wrap{margin-top:8px;}
+
 /* Market section */
 .mkt-sec{display:none;}
 .mkt-sec.active{display:block;}
@@ -225,6 +231,16 @@ let selIdx={jp:0,us:0};
 let raOneChart={jp:null,us:null};
 let pcCharts={};
 
+// SBI証券リンク生成
+function sbiUrl(code, isUs){
+  if(isUs){
+    return `https://www.sbisec.co.jp/ETGate/?OutSide=on&getFlg=on&_ControlID=WPLETsiR001Control&_PageID=WPLETsiR001Idtl31&_DataStoreID=DSWPLETsiR001Control&_ActionID=returnToStockPriceList&i_stock_sec=${code}&i_dom_flg=0&i_exchange_code=ALL&i_output_type=2`;
+  } else {
+    return `https://www.sbisec.co.jp/ETGate/?OutSide=on&getFlg=on&_ControlID=WPLETsiR001Control&_PageID=WPLETsiR001Iser10&_ActionID=clickToSearchStockPriceJP&_DataStoreID=DSWPLETsiR001Control&i_stock_sec=${code}&i_output_type=0`;
+  }
+}
+const SBI_ICON=`<svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M13 3L3 13M13 3H7M13 3V9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+
 function switchMkt(m){
   ['jp','us'].forEach(x=>{
     document.getElementById('sec-'+x).classList.toggle('active',x===m);
@@ -245,6 +261,7 @@ function renderCards(stocks,cid,mkt){
     const d=document.createElement('div');
     d.className='s-card'+(mkt==='us'?' us':'')+(i===0?' sel':'');
     d.id='card-'+mkt+'-'+i;
+    const isUs=mkt==='us';
     d.innerHTML=`<div class="s-rank">${s.rank}</div>
 <div class="s-code">${s.code} | ${s.market}</div>
 <div class="s-name">${s.name}</div>
@@ -252,7 +269,8 @@ function renderCards(stocks,cid,mkt){
 <div class="s-price">${fmt(s.price,s.currency)}</div>
 <div class="s-chg">▲ ${s.change}</div>
 <div class="s-bar-lbl"><span>CANSLIM総合</span><span>${s.totalScore}/10</span></div>
-<div class="s-bar-tr"><div class="s-bar-fl" style="width:${pct}%"></div></div>`;
+<div class="s-bar-tr"><div class="s-bar-fl" style="width:${pct}%"></div></div>
+<div class="sbi-btn-wrap"><a class="sbi-btn" href="${sbiUrl(s.code,isUs)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">${SBI_ICON}SBI証券で見る</a></div>`;
     d.addEventListener('click',()=>selStock(mkt,i));
     c.appendChild(d);
   });
@@ -333,6 +351,7 @@ ${CS_KEYS.map(k=>{
 <div>
   <div class="det-name">${s.code} | ${s.name}</div>
   <div class="det-meta">${s.market} | ${s.sector}</div>
+  <div style="margin-top:10px"><a class="sbi-btn" href="${sbiUrl(s.code,isUs)}" target="_blank" rel="noopener">${SBI_ICON}SBI証券で詳細を見る</a></div>
 </div>
 <div style="text-align:right">
   <div class="det-pr">${fmt(s.price,s.currency)}</div>
