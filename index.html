@@ -241,6 +241,43 @@
   .page-sec{display:none;}
   .page-sec.active{display:block;}
 
+  /* ── チャート分析セクション ── */
+  .chart-analysis-section{margin-top:0;}
+  .ca-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+  .ca-rating{font-size:1.1rem;letter-spacing:2px;}
+  .ca-base-badge{
+    display:inline-flex;align-items:center;gap:5px;
+    background:rgba(108,99,255,.15);border:1px solid rgba(108,99,255,.4);
+    color:var(--accent);font-size:.7rem;font-weight:700;
+    padding:4px 10px;border-radius:20px;margin-bottom:10px;
+  }
+  .ca-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+  .ca-item{background:var(--card2);border-radius:10px;padding:10px;border:1px solid var(--border);}
+  .ca-item-lbl{font-size:.62rem;color:var(--text2);margin-bottom:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+  .ca-item-val{font-size:.82rem;font-weight:700;color:var(--text1);}
+  .ca-item-sub{font-size:.65rem;color:var(--text2);margin-top:3px;line-height:1.4;}
+  .ca-rs-bar-bg{height:6px;background:var(--border);border-radius:3px;margin-top:5px;}
+  .ca-rs-bar-fill{height:6px;border-radius:3px;transition:width .6s;}
+  .ca-pivot-box{
+    background:rgba(63,185,80,.08);border:1px solid rgba(63,185,80,.3);
+    border-radius:10px;padding:10px;margin-bottom:10px;
+  }
+  .ca-pivot-lbl{font-size:.62rem;color:var(--green);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px;}
+  .ca-pivot-val{font-size:1.1rem;font-weight:700;color:var(--green);}
+  .ca-pivot-desc{font-size:.68rem;color:var(--text2);margin-top:3px;line-height:1.4;}
+  .ca-caution{
+    background:rgba(248,81,73,.08);border:1px solid rgba(248,81,73,.3);
+    border-radius:10px;padding:10px;margin-top:8px;
+  }
+  .ca-caution-lbl{font-size:.62rem;color:var(--red);font-weight:700;margin-bottom:4px;}
+  .ca-caution-text{font-size:.68rem;color:var(--text1);line-height:1.5;}
+  .ca-buy-timing{
+    background:rgba(210,153,34,.08);border:1px solid rgba(210,153,34,.3);
+    border-radius:10px;padding:10px;margin-top:8px;
+  }
+  .ca-buy-lbl{font-size:.62rem;color:var(--gold);font-weight:700;margin-bottom:4px;}
+  .ca-buy-text{font-size:.68rem;color:var(--text1);line-height:1.5;}
+
   /* ── ユーティリティ ── */
   .mkt-sec{display:none;}
   .mkt-sec.active{display:block;}
@@ -570,7 +607,8 @@ function renderDet(mkt,i){
       <div class="det-tab active" onclick="switchDetTab(this,'score','${mkt}')">スコア</div>
       <div class="det-tab" onclick="switchDetTab(this,'canslim','${mkt}')">CANSLIM詳細</div>
       <div class="det-tab" onclick="switchDetTab(this,'entry','${mkt}')">押し目買い</div>
-      <div class="det-tab" onclick="switchDetTab(this,'pcchart','${mkt}')">チャート</div>
+      <div class="det-tab" onclick="switchDetTab(this,'chartanalysis','${mkt}')">チャート分析</div>
+      <div class="det-tab" onclick="switchDetTab(this,'pcchart','${mkt}')">株価チャート</div>
     </div>
     <div class="det-content active" id="dc-score-${mkt}">
       <table class="score-table">
@@ -607,6 +645,9 @@ function renderDet(mkt,i){
         <div class="ma-item"><div class="ma-lbl">75日MA</div><div class="ma-val">${fmt(s.ma75,s.currency)}</div></div>
       </div>
     </div>
+    <div class="det-content" id="dc-chartanalysis-${mkt}">
+      ${buildChartAnalysisHTML(s)}
+    </div>
     <div class="det-content" id="dc-pcchart-${mkt}">
       <div class="chart-wrap"><canvas id="pc-${mkt}-${i}"></canvas></div>
     </div>
@@ -628,6 +669,60 @@ function switchDetTab(el,tab,mkt){
     const s=(mkt==='jp'?domesticStocks:usStocks)[i];
     setTimeout(()=>buildPcChart(mkt,i,s),80);
   }
+}
+
+function buildChartAnalysisHTML(s){
+  const ca=s.chartAnalysis;
+  if(!ca) return '<div style="padding:12px;color:var(--text2);font-size:.75rem;">チャート分析データがありません</div>';
+  const rsColor=ca.rsScore>=90?'#3fb950':ca.rsScore>=70?'#d29922':'#f85149';
+  const pivotFmt=s.currency==='USD'?'$'+ca.pivotPoint.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}):ca.pivotPoint.toLocaleString('ja-JP')+'円';
+  return `
+  <div class="chart-analysis-section">
+    <div class="ca-header">
+      <div>
+        <div style="font-size:.68rem;color:var(--text2);margin-bottom:4px;">チャート総合評価</div>
+        <div class="ca-rating">${ca.overallChartRating}</div>
+      </div>
+      <div style="text-align:right;">
+        <div style="font-size:.62rem;color:var(--text2);margin-bottom:4px;">RS（相対強度）</div>
+        <div style="font-size:1.2rem;font-weight:700;color:${rsColor}">${ca.rsScore}<span style="font-size:.65rem;">/100</span></div>
+      </div>
+    </div>
+
+    <div class="ca-base-badge">📊 ${ca.baseType}</div>
+    <div style="font-size:.68rem;color:var(--text2);line-height:1.5;margin-bottom:12px;">${ca.baseDescription}</div>
+
+    <div class="ca-pivot-box">
+      <div class="ca-pivot-lbl">🎯 ピボットポイント（買いエントリー基準価格）</div>
+      <div class="ca-pivot-val">${pivotFmt}</div>
+      <div class="ca-pivot-desc">${ca.pivotDescription}</div>
+    </div>
+
+    <div class="ca-grid">
+      <div class="ca-item">
+        <div class="ca-item-lbl">📈 出来高パターン</div>
+        <div class="ca-item-val" style="font-size:.72rem;">${ca.breakoutVolume}</div>
+        <div class="ca-item-sub">${ca.volumePattern}</div>
+      </div>
+      <div class="ca-item">
+        <div class="ca-item-lbl">💪 RS（相対強度）</div>
+        <div class="ca-item-val" style="color:${rsColor}">${ca.rsScore}/100</div>
+        <div class="ca-rs-bar-bg"><div class="ca-rs-bar-fill" style="width:${ca.rsScore}%;background:${rsColor}"></div></div>
+        <div class="ca-item-sub">${ca.rsDescription}</div>
+      </div>
+    </div>
+
+    <div class="ca-buy-timing">
+      <div class="ca-buy-lbl">⏰ 推奨買いタイミング</div>
+      <div class="ca-buy-text">${ca.buyTiming}</div>
+    </div>
+
+    <div class="ca-caution">
+      <div class="ca-caution-lbl">⚠️ 注意事項</div>
+      <div class="ca-caution-text">${ca.caution}</div>
+    </div>
+  </div>
+  `;
 }
 
 function buildPcChart(mkt,i,s){
