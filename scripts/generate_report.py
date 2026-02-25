@@ -18,7 +18,7 @@ def generate_report(canslim_results):
     Results are already sorted by totalScore from calculate_canslim.py.
     """
     # Keep top N stocks (default: all, but cap at 5 for display)
-    top_stocks = canslim_results[:5]
+    top_stocks = canslim_results[:3]
 
     report_date = datetime.now().strftime("%Y年%m月%d日")
 

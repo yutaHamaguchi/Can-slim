@@ -1,1098 +1,553 @@
-// CANSLIM デイリーレポート データ
-// 生成日時: 2026-02-24 21:15:10
-// 自動生成ファイル - 手動編集不要
+// 自動生成ファイル - 2026-02-25 00:47:36
+// CANSLIM Bot (Manus) - 米国株専用
 
-const reportDate = "2026年02月24日";
-
-const marketSummary = {
-  "nikkei225": {
-    "price": 58199.9,
-    "change": 877.97,
-    "changeRate": 1.53,
-    "trend": "上昇"
-  },
-  "topix": {
-    "price": null,
-    "trend": "上昇"
-  },
-  "sp500": {
-    "price": 5700.0,
-    "changeRate": 0.75,
-    "trend": "上昇"
-  },
-  "usdJpy": {
-    "price": 155.75,
-    "change": -0.14
-  },
-  "marketCondition": "強気相場",
-  "marketComment": "日経平均は+1.5%の上昇で58,000円台を維持。米国市場も堅調で、CANSLIM投資に適した環境。"
-};
-
-const domesticStocks = [
-  {
-    "code": "4588",
-    "name": "オンコリス",
-    "market": "グロース",
-    "price": "2,779",
-    "change": "+471",
-    "changeRate": "+20.41%",
-    "sector": "医薬品",
-    "marketCap": 814.0,
-    "per": null,
-    "pbr": null,
-    "roe": null,
-    "creditRatio": null,
-    "foreignRatio": null,
-    "finance": {
-      "epsQuarters": [
-        -50.2,
-        -37.0,
-        -52.9,
-        -18.2
-      ],
-      "epsAnnual": [
-        -66.3,
-        -108.9,
-        -77.2,
-        -80.0
-      ],
-      "salesQuarters": [
-        63.0,
-        31.0,
-        28.0,
-        0.0
-      ],
-      "epsQoQGrowth": -35.7
-    },
-    "canslimScores": {
-      "C": 2,
-      "A": 10,
-      "N": 10,
-      "S": 7,
-      "L": 10,
-      "I": 3,
-      "M": 7,
-      "total": 7.0,
-      "details": {
-        "C": [
-          "EPS Q/Q: -35.7% (要注意)"
-        ],
-        "A": [
-          "3期以上連続成長確認"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+20.4%の大幅高（新材料あり）"
-        ],
-        "S": [
-          "出来高比1.5x（強い）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア99（市場最強クラス）",
-          "優先業種（医薬品）"
-        ],
-        "I": [
-          "外国人持株比率データなし"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
-      }
-    },
-    "chartAnalysis": {
-      "currentPrice": 2769.0,
-      "ma5": 2423.4,
-      "ma25": 2012.12,
-      "ma75": 1410.29,
-      "rsScore": 99,
-      "baseType": "上昇トレンド",
-      "baseMaturity": 100,
-      "pivotPoint": 2945.25,
-      "volumeRatio": 1.51,
-      "atr": 251.57,
-      "week52High": 2805.0,
-      "week52Low": 458.0,
-      "visualComment": "バイオ医薬品銘柄として急騰中。本日+20%超の大幅高。ただし75日線からの乖離率が大きく、短期的な過熱感がある。抗ウイルス薬の開発進捗が材料か。押し目買いを狙うなら5日線付近まで調整を待ちたい。",
-      "visualScore": 7
-    },
-    "buyStrategy": {
-      "currentPrice": 2769.0,
-      "buyPoints": {
-        "aggressive": {
-          "price": 2423.4,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 2012.12,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 1410.29,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
-      },
-      "pivotPoint": 2945.25,
-      "stopLoss": 2391.64,
-      "targetPrice": 3506.25,
-      "rrRatio": 1.95,
-      "recommendedAction": "⏳ 押し目待ち",
-      "actionCode": "WAIT",
-      "deviationFromPivot": -6.0
-    }
-  },
-  {
-    "code": "3723",
-    "name": "ファルコム",
-    "market": "グロース",
-    "price": "2,369",
-    "change": "+138",
-    "changeRate": "+6.19%",
-    "sector": "情報・通信",
-    "marketCap": 245.0,
-    "per": null,
-    "pbr": null,
-    "roe": null,
-    "creditRatio": null,
-    "foreignRatio": null,
-    "finance": {
-      "epsQuarters": [
-        46.3,
-        34.7,
-        4.3,
-        29.1
-      ],
-      "epsAnnual": [
-        100.0,
-        88.7,
-        82.9,
-        87.9
-      ],
-      "salesQuarters": [
-        1138.0,
-        1013.0,
-        604.0,
-        693.0
-      ],
-      "epsQoQGrowth": 33.4
-    },
-    "canslimScores": {
-      "C": 8,
-      "A": 10,
-      "N": 8,
-      "S": 5,
-      "L": 8,
-      "I": 3,
-      "M": 7,
-      "total": 7.2,
-      "details": {
-        "C": [
-          "EPS Q/Q: +33.4% (良好)"
-        ],
-        "A": [
-          "3期以上連続成長確認"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+6.2%の上昇"
-        ],
-        "S": [
-          "出来高比0.3x（低め）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア80（強い）",
-          "優先業種（情報・通信）"
-        ],
-        "I": [
-          "外国人持株比率データなし"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
-      }
-    },
-    "chartAnalysis": {
-      "currentPrice": 2383.0,
-      "ma5": 2272.6,
-      "ma25": 1850.84,
-      "ma75": 1643.53,
-      "rsScore": 80,
-      "baseType": "ダブルボトム",
-      "baseMaturity": 100,
-      "pivotPoint": 2502.15,
-      "volumeRatio": 0.31,
-      "atr": 107.29,
-      "week52High": 2383.0,
-      "week52Low": 1035.28,
-      "visualComment": "ゲーム会社として着実な上昇トレンド。移動平均線が全てゴールデンクロス形成済みで健全な上昇。出来高は少ないが、ピボット付近での推移。EPS成長率33%と好調。",
-      "visualScore": 8
-    },
-    "buyStrategy": {
-      "currentPrice": 2383.0,
-      "buyPoints": {
-        "aggressive": {
-          "price": 2272.6,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 1850.84,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 1643.53,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
-      },
-      "pivotPoint": 2502.15,
-      "stopLoss": 2222.06,
-      "targetPrice": 2978.75,
-      "rrRatio": 3.7,
-      "recommendedAction": "🟢 今が買い時",
-      "actionCode": "BUY",
-      "deviationFromPivot": -4.8
-    }
-  },
-  {
-    "code": "3063",
-    "name": "Ｊグループ",
-    "market": "グロース",
-    "price": "871",
-    "change": "+25",
-    "changeRate": "+2.96%",
-    "sector": null,
-    "marketCap": 108.0,
-    "per": null,
-    "pbr": null,
-    "roe": null,
-    "creditRatio": null,
-    "foreignRatio": null,
-    "finance": {
-      "epsQuarters": [
-        -40.3,
-        10.6,
-        -4.8,
-        9.4
-      ],
-      "epsAnnual": [
-        2.67,
-        4.83,
-        -623.0,
-        -4.0
-      ],
-      "salesQuarters": [
-        4431.0,
-        5328.0,
-        5426.0,
-        7660.0
-      ],
-      "epsQoQGrowth": -480.2
-    },
-    "canslimScores": {
-      "C": 2,
-      "A": 10,
-      "N": 7,
-      "S": 7,
-      "L": 2,
-      "I": 3,
-      "M": 7,
-      "total": 5.5,
-      "details": {
-        "C": [
-          "EPS Q/Q: -480.2% (要注意)"
-        ],
-        "A": [
-          "3期以上連続成長確認"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+3.0%"
-        ],
-        "S": [
-          "出来高比1.7x（強い）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア45（弱い）"
-        ],
-        "I": [
-          "外国人持株比率データなし"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
-      }
-    },
-    "chartAnalysis": {
-      "currentPrice": 870.0,
-      "ma5": 858.6,
-      "ma25": 841.56,
-      "ma75": 806.83,
-      "rsScore": 45,
-      "baseType": "フラットベース",
-      "baseMaturity": 100,
-      "pivotPoint": 918.75,
-      "volumeRatio": 1.69,
-      "atr": 8.64,
-      "week52High": 875.0,
-      "week52Low": 618.43,
-      "visualComment": "飲食系グループ会社として安定した上昇。フラットベース形成中で、ブレイクアウト待ちの状態。時価総額が小さく、流動性リスクに注意。",
-      "visualScore": 6
-    },
-    "buyStrategy": {
-      "currentPrice": 870.0,
-      "buyPoints": {
-        "aggressive": {
-          "price": 858.6,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 841.56,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 806.83,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
-      },
-      "pivotPoint": 918.75,
-      "stopLoss": 857.04,
-      "targetPrice": 1093.75,
-      "rrRatio": 17.26,
-      "recommendedAction": "⏳ 押し目待ち",
-      "actionCode": "WAIT",
-      "deviationFromPivot": -5.3
-    }
-  },
-  {
-    "code": "5252",
-    "name": "日本ナレッジ",
-    "market": "グロース",
-    "price": "925",
-    "change": "+57",
-    "changeRate": "+6.57%",
-    "sector": "情報・通信",
-    "marketCap": 38.4,
-    "per": null,
-    "pbr": null,
-    "roe": null,
-    "creditRatio": null,
-    "foreignRatio": null,
-    "finance": {
-      "epsQuarters": [],
-      "epsAnnual": [
-        159.0,
-        81.0,
-        2.0
-      ],
-      "salesQuarters": [],
-      "epsQoQGrowth": null
-    },
-    "canslimScores": {
-      "C": 4,
-      "A": 7,
-      "N": 8,
-      "S": 7,
-      "L": 10,
-      "I": 3,
-      "M": 7,
-      "total": 6.7,
-      "details": {
-        "C": [
-          "EPS成長率データなし"
-        ],
-        "A": [
-          "2期連続成長"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+6.6%の上昇"
-        ],
-        "S": [
-          "出来高比1.5x（強い）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア90（市場最強クラス）",
-          "優先業種（情報・通信）"
-        ],
-        "I": [
-          "外国人持株比率データなし"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
-      }
-    },
-    "chartAnalysis": {
-      "currentPrice": 925.0,
-      "ma5": 851.0,
-      "ma25": 707.04,
-      "ma75": 597.32,
-      "rsScore": 90,
-      "baseType": "ダブルボトム",
-      "baseMaturity": 100,
-      "pivotPoint": 971.25,
-      "volumeRatio": 1.54,
-      "atr": 32.86,
-      "week52High": 925.0,
-      "week52Low": 278.33,
-      "visualComment": "IT・情報通信系の小型株として急騰中。本日+6.6%の上昇。ただし時価総額が38億円と非常に小さく、流動性リスクに注意。ピボット付近での推移で買いタイミングを検討。",
-      "visualScore": 7
-    },
-    "buyStrategy": {
-      "currentPrice": 925.0,
-      "buyPoints": {
-        "aggressive": {
-          "price": 851.0,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 707.04,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 597.32,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
-      },
-      "pivotPoint": 971.25,
-      "stopLoss": 875.71,
-      "targetPrice": 1156.25,
-      "rrRatio": 4.69,
-      "recommendedAction": "🟢 今が買い時",
-      "actionCode": "BUY",
-      "deviationFromPivot": -4.8
-    }
-  },
-  {
-    "code": "7409",
-    "name": "エアロエッジ",
-    "market": "グロース",
-    "price": "5,610",
-    "change": "+490",
-    "changeRate": "+9.57%",
-    "sector": "機械",
-    "marketCap": 669.0,
-    "per": null,
-    "pbr": null,
-    "roe": null,
-    "creditRatio": null,
-    "foreignRatio": null,
-    "finance": {
-      "epsQuarters": [
-        38.4,
-        48.0,
-        46.3,
-        13.3
-      ],
-      "epsAnnual": [
-        0.7,
-        67.3,
-        61.1,
-        63.8
-      ],
-      "salesQuarters": [
-        1527.0,
-        1895.0,
-        1908.0,
-        1455.0
-      ],
-      "epsQoQGrowth": -20.0
-    },
-    "canslimScores": {
-      "C": 2,
-      "A": 10,
-      "N": 8,
-      "S": 5,
-      "L": 10,
-      "I": 3,
-      "M": 7,
-      "total": 6.7,
-      "details": {
-        "C": [
-          "EPS Q/Q: -20.0% (要注意)"
-        ],
-        "A": [
-          "3期以上連続成長確認"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+9.6%の上昇"
-        ],
-        "S": [
-          "出来高比0.8x（低め）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア99（市場最強クラス）",
-          "優先業種（機械）"
-        ],
-        "I": [
-          "外国人持株比率データなし"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
-      }
-    },
-    "chartAnalysis": {
-      "currentPrice": 5660.0,
-      "ma5": 5352.0,
-      "ma25": 4078.6,
-      "ma75": 2861.89,
-      "rsScore": 99,
-      "baseType": "上昇トレンド",
-      "baseMaturity": 100,
-      "pivotPoint": 5943.0,
-      "volumeRatio": 0.78,
-      "atr": 368.93,
-      "week52High": 5660.0,
-      "week52Low": 575.0,
-      "visualComment": "航空宇宙・防衛関連の機械メーカーとして強い上昇トレンド。本日+9.6%の大幅高。RS99と市場最強クラスの相対強度。ピボット付近での買いを検討。",
-      "visualScore": 8
-    },
-    "buyStrategy": {
-      "currentPrice": 5660.0,
-      "buyPoints": {
-        "aggressive": {
-          "price": 5352.0,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 4078.6,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 2861.89,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
-      },
-      "pivotPoint": 5943.0,
-      "stopLoss": 5106.6,
-      "targetPrice": 7075.0,
-      "rrRatio": 2.56,
-      "recommendedAction": "🟢 今が買い時",
-      "actionCode": "BUY",
-      "deviationFromPivot": -4.8
-    }
-  }
-];
+const reportDate = "2026年02月25日";
 
 const usStocks = [
   {
-    "ticker": "VIR",
-    "company": "Vir Biotechnology Inc",
-    "price": "9.49",
-    "change": "27.73%",
-    "sector": null,
-    "industry": null,
-    "marketCap": "1.32B",
-    "country": null,
-    "finvizData": {
-      "epsQoQ": "59.67%",
-      "epsYoY": "17.32%",
-      "salesQoQ": "417.78%",
-      "instTrans": "2.70%",
-      "shortFloat": "12.92%",
-      "perfYear": "0.21%",
-      "description": null
-    },
-    "canslimScores": {
-      "C": 10,
-      "A": 5,
-      "N": 10,
-      "S": 8,
-      "L": 2,
-      "I": 7,
-      "M": 7,
-      "total": 7.0,
-      "details": {
-        "C": [
-          "EPS Q/Q: +59.7% (優秀)"
-        ],
-        "A": [
-          "EPS Y/Y: +17.3% (普通)"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+27.7%の大幅高（新材料あり）"
-        ],
-        "S": [
-          "出来高比9.8x（非常に強い）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア45（弱い）"
-        ],
-        "I": [
-          "外国人持株比率データなし",
-          "機関投資家小幅買い増し+2.7%",
-          "ショートフロート12.9%（中程度）"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
+    "rank": 1,
+    "code": "AMD",
+    "name": "Advanced Micro Devices, Inc.",
+    "market": "NASDAQ",
+    "sector": "Technology / Semiconductors",
+    "price": 213.84,
+    "change": "+8.77%",
+    "currency": "USD",
+    "totalScore": 6.4,
+    "buyRecommendation": "⏳ 様子見→条件未達",
+    "canslim": {
+      "C": {
+        "score": 10,
+        "label": "C — Current Quarterly EPS Growth",
+        "comment": "EPS Q/Q +210.6%（超高成長）。売上高Q/Q +34.1%"
+      },
+      "A": {
+        "score": 9,
+        "label": "A — Annual EPS Growth",
+        "comment": "EPS this Y +62.2%、EPS next Y +60.5%、EPS next 5Y +49.1%。ROE 7.1%、ROA 5.8%"
+      },
+      "N": {
+        "score": 1,
+        "label": "N — New Products / New 52W High",
+        "comment": "52週高値データなし。直近ニュース: Meta-AMD deal makes sense for Meta but less so for AMD, says..."
+      },
+      "S": {
+        "score": 5,
+        "label": "S — Supply/Demand",
+        "comment": "時価総額$348.6B（大型株）、Short Float 2.1%（健全）"
+      },
+      "L": {
+        "score": 8,
+        "label": "L — Leader in Industry",
+        "comment": "S&P500比+88.7%（業界トップクラス）、SMA50比-2.4%（SMA50割れ）、1年リターン+105.7%"
+      },
+      "I": {
+        "score": 6,
+        "label": "I — Institutional Sponsorship",
+        "comment": "機関投資家買い増し+2.0%、機関投資家保有率68.7%（適正）、インサイダー売り-7.1%。アナリスト推奨1.51、目標株価$290.31"
+      },
+      "M": {
+        "score": 6,
+        "label": "M — Market Direction",
+        "comment": "S&P500はSMA50上方だが勢い弱め（1ヶ月-0.3%）"
       }
     },
     "chartAnalysis": {
-      "currentPrice": 9.49,
-      "ma5": 8.03,
-      "ma25": 7.51,
-      "ma75": 6.52,
-      "rsScore": 45,
       "baseType": "上昇トレンド",
-      "baseMaturity": 100,
-      "pivotPoint": 10.8,
-      "volumeRatio": 9.75,
-      "atr": 0.65,
-      "week52High": 10.29,
-      "week52Low": 4.16
+      "baseDescription": "チャートデータ不足",
+      "pivotPoint": 269.75,
+      "pivotDescription": "52週高値$267.08の1%上、$269.75がピボットポイント。",
+      "breakoutVolume": "出来高データなし",
+      "rsScore": 79,
+      "rsDescription": "S&P500比+88.7%（過去1年）",
+      "volumePattern": "出来高パターン分析中",
+      "overallChartRating": "★★★☆☆",
+      "buyTiming": "52週高値$267.08を出来高を伴って上抜けた時点。ピボット$269.75での指値推奨。",
+      "caution": "標準的なリスク管理を適用。"
     },
-    "buyStrategy": {
-      "currentPrice": 9.49,
-      "buyPoints": {
-        "aggressive": {
-          "price": 8.03,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 7.51,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 6.52,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
+    "currentPrice": 213.84,
+    "ma5": 215.43,
+    "ma25": 219.82,
+    "ma75": 184.01,
+    "entryPoints": [
+      {
+        "label": "Breakout Entry (52W High)",
+        "price": 269.75,
+        "range": "$267.08〜$272.42",
+        "timing": "52週高値$267.08を出来高を伴って上抜けた時点。ピボット$269.75での指値推奨。",
+        "riskReward": 3.0
       },
-      "pivotPoint": 10.8,
-      "stopLoss": 8.51,
-      "targetPrice": 12.86,
-      "rrRatio": 3.44,
-      "recommendedAction": "⏳ 押し目待ち",
-      "actionCode": "WAIT",
-      "deviationFromPivot": -12.1
+      {
+        "label": "Pullback to 50-day MA",
+        "price": 219.82,
+        "range": "$213.23〜$226.42",
+        "timing": "50日移動平均（$219.82）への押し目。出来高減少後の反発時。",
+        "riskReward": 4.0
+      },
+      {
+        "label": "Deep Pullback (200-day MA)",
+        "price": 184.01,
+        "range": "$178.49〜$189.53",
+        "timing": "200日移動平均（$184.01）への深押し。長期上昇トレンド確認後。",
+        "riskReward": 5.0
+      }
+    ],
+    "stopLoss": {
+      "price": 250.87,
+      "desc": "Breakout entry: $250.87 (pivot -7%)"
+    },
+    "targetPrice": 290.31,
+    "targetBasis": "Analyst consensus $290.31",
+    "riskReward": 3.0,
+    "chartData": {
+      "labels": [
+        "Mar 25",
+        "Apr 25",
+        "May 25",
+        "Jun 25",
+        "Jul 25",
+        "Aug 25",
+        "Sep 25",
+        "Oct 25",
+        "Nov 25",
+        "Dec 25",
+        "Jan 26",
+        "Feb 26"
+      ],
+      "prices": [
+        102.74,
+        97.35,
+        110.73,
+        141.9,
+        176.31,
+        162.63,
+        161.79,
+        256.12,
+        217.53,
+        214.16,
+        236.73,
+        213.84
+      ],
+      "ma5": [
+        102.74,
+        100.04,
+        103.61,
+        113.18,
+        125.81,
+        137.78,
+        150.67,
+        179.75,
+        194.88,
+        202.45,
+        217.27,
+        227.68
+      ],
+      "ma25": [
+        102.74,
+        100.04,
+        103.61,
+        113.18,
+        125.81,
+        131.94,
+        136.21,
+        151.2,
+        158.57,
+        164.13,
+        170.73,
+        174.32
+      ],
+      "ma75": [
+        102.74,
+        100.04,
+        103.61,
+        113.18,
+        125.81,
+        131.94,
+        136.21,
+        151.2,
+        158.57,
+        164.13,
+        170.73,
+        174.32
+      ],
+      "volumes": [
+        721.27,
+        936.36,
+        910.14,
+        1075.78,
+        1186.3,
+        1305.78,
+        915.56,
+        1759.73,
+        1050.77,
+        600.0,
+        759.65,
+        680.45
+      ]
     }
   },
   {
-    "ticker": "ZETA",
-    "company": "Zeta Global Holdings Corp",
-    "price": "16.98",
-    "change": "13.35%",
-    "sector": null,
-    "industry": null,
-    "marketCap": "4.18B",
-    "country": null,
-    "finvizData": {
-      "epsQoQ": "82.38%",
-      "epsYoY": "85.20%",
-      "salesQoQ": "25.67%",
-      "instTrans": "0.09%",
-      "shortFloat": "10.93%",
-      "perfYear": "-21.50%",
-      "description": null
-    },
-    "canslimScores": {
-      "C": 10,
-      "A": 10,
-      "N": 10,
-      "S": 7,
-      "L": 2,
-      "I": 7,
-      "M": 7,
-      "total": 7.6,
-      "details": {
-        "C": [
-          "EPS Q/Q: +82.4% (優秀)"
-        ],
-        "A": [
-          "EPS Y/Y: +85.2% (優秀)"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+13.3%の大幅高（新材料あり）"
-        ],
-        "S": [
-          "出来高比1.9x（強い）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア30（弱い）"
-        ],
-        "I": [
-          "外国人持株比率データなし",
-          "機関投資家小幅買い増し+0.1%",
-          "ショートフロート10.9%（中程度）"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
+    "rank": 2,
+    "code": "ONDS",
+    "name": "Ondas Inc.",
+    "market": "NASDAQ",
+    "sector": "Technology / Communication Equipment",
+    "price": 10.4,
+    "change": "+2.06%",
+    "currency": "USD",
+    "totalScore": 6.4,
+    "buyRecommendation": "⏳ 様子見→条件未達",
+    "canslim": {
+      "C": {
+        "score": 9,
+        "label": "C — Current Quarterly EPS Growth",
+        "comment": "EPS Q/Q +77.6%（高成長）。売上高Q/Q +582.0%"
+      },
+      "A": {
+        "score": 9,
+        "label": "A — Annual EPS Growth",
+        "comment": "EPS this Y +60.7%、EPS next Y +57.1%、EPS next 5Y +55.9%。ROE -17.0%、ROA -13.6%"
+      },
+      "N": {
+        "score": 1,
+        "label": "N — New Products / New 52W High",
+        "comment": "52週高値データなし。直近ニュース: ONDS vs. DPRO: Which Drone Tech Stock Is the Better Pick Now..."
+      },
+      "S": {
+        "score": 4,
+        "label": "S — Supply/Demand",
+        "comment": "時価総額$4.68B（ミッドキャップ）、Short Float 25.9%（高い）"
+      },
+      "L": {
+        "score": 8,
+        "label": "L — Leader in Industry",
+        "comment": "S&P500比+883.0%（業界トップクラス）、SMA50比-2.1%（SMA50割れ）、1年リターン+900.0%"
+      },
+      "I": {
+        "score": 8,
+        "label": "I — Institutional Sponsorship",
+        "comment": "機関投資家買い増し+9.8%（強い支持）、機関投資家保有率34.0%（まだ余地あり）、インサイダー売り-14.1%。アナリスト推奨1.22、目標株価$18.22"
+      },
+      "M": {
+        "score": 6,
+        "label": "M — Market Direction",
+        "comment": "S&P500はSMA50上方だが勢い弱め（1ヶ月-0.3%）"
       }
     },
     "chartAnalysis": {
-      "currentPrice": 16.98,
-      "ma5": 15.96,
-      "ma25": 17.83,
-      "ma75": 18.96,
-      "rsScore": 30,
       "baseType": "上昇トレンド",
-      "baseMaturity": 69,
-      "pivotPoint": 22.28,
-      "volumeRatio": 1.95,
-      "atr": 1.18,
-      "week52High": 24.9,
-      "week52Low": 10.69
+      "baseDescription": "チャートデータ不足",
+      "pivotPoint": 15.43,
+      "pivotDescription": "52週高値$15.28の1%上、$15.43がピボットポイント。",
+      "breakoutVolume": "出来高データなし",
+      "rsScore": 99,
+      "rsDescription": "S&P500比+883.0%（過去1年）",
+      "volumePattern": "出来高パターン分析中",
+      "overallChartRating": "★★★☆☆",
+      "buyTiming": "52週高値$15.28を出来高を伴って上抜けた時点。ピボット$15.43での指値推奨。",
+      "caution": "Short Float 25.9%に注意。"
     },
-    "buyStrategy": {
-      "currentPrice": 16.98,
-      "buyPoints": {
-        "aggressive": {
-          "price": 15.96,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 17.83,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 18.96,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
+    "currentPrice": 10.4,
+    "ma5": 10.35,
+    "ma25": 10.56,
+    "ma75": 6.09,
+    "entryPoints": [
+      {
+        "label": "Breakout Entry (52W High)",
+        "price": 15.43,
+        "range": "$15.28〜$15.59",
+        "timing": "52週高値$15.28を出来高を伴って上抜けた時点。ピボット$15.43での指値推奨。",
+        "riskReward": 3.0
       },
-      "pivotPoint": 22.28,
-      "stopLoss": 15.21,
-      "targetPrice": 31.12,
-      "rrRatio": 7.99,
-      "recommendedAction": "⏳ 押し目待ち",
-      "actionCode": "WAIT",
-      "deviationFromPivot": -23.8
+      {
+        "label": "Pullback to 50-day MA",
+        "price": 10.56,
+        "range": "$10.25〜$10.88",
+        "timing": "50日移動平均（$10.56）への押し目。出来高減少後の反発時。",
+        "riskReward": 4.0
+      },
+      {
+        "label": "Deep Pullback (200-day MA)",
+        "price": 6.09,
+        "range": "$5.91〜$6.27",
+        "timing": "200日移動平均（$6.09）への深押し。長期上昇トレンド確認後。",
+        "riskReward": 5.0
+      }
+    ],
+    "stopLoss": {
+      "price": 14.35,
+      "desc": "Breakout entry: $14.35 (pivot -7%)"
+    },
+    "targetPrice": 18.22,
+    "targetBasis": "Analyst consensus $18.22",
+    "riskReward": 3.0,
+    "chartData": {
+      "labels": [
+        "Mar 25",
+        "Apr 25",
+        "May 25",
+        "Jun 25",
+        "Jul 25",
+        "Aug 25",
+        "Sep 25",
+        "Oct 25",
+        "Nov 25",
+        "Dec 25",
+        "Jan 26",
+        "Feb 26"
+      ],
+      "prices": [
+        1.07,
+        0.78,
+        1.22,
+        1.92,
+        2.12,
+        5.86,
+        7.72,
+        6.44,
+        7.9,
+        9.76,
+        10.36,
+        10.4
+      ],
+      "ma5": [
+        1.07,
+        0.93,
+        1.02,
+        1.25,
+        1.42,
+        2.38,
+        3.77,
+        4.81,
+        6.01,
+        7.54,
+        8.44,
+        8.97
+      ],
+      "ma25": [
+        1.07,
+        0.93,
+        1.02,
+        1.25,
+        1.42,
+        2.16,
+        2.96,
+        3.39,
+        3.89,
+        4.48,
+        5.01,
+        5.46
+      ],
+      "ma75": [
+        1.07,
+        0.93,
+        1.02,
+        1.25,
+        1.42,
+        2.16,
+        2.96,
+        3.39,
+        3.89,
+        4.48,
+        5.01,
+        5.46
+      ],
+      "volumes": [
+        251.16,
+        154.23,
+        155.52,
+        519.13,
+        425.68,
+        1008.25,
+        1010.22,
+        1325.07,
+        2313.21,
+        1742.38,
+        2230.01,
+        1306.05
+      ]
     }
   },
   {
-    "ticker": "POET",
-    "company": "POET Technologies Inc",
-    "price": "6.11",
-    "change": "10.69%",
-    "sector": null,
-    "industry": null,
-    "marketCap": "933.07M",
-    "country": null,
-    "finvizData": {
-      "epsQoQ": "46.65%",
-      "epsYoY": "-6.99%",
-      "salesQoQ": "7998.62%",
-      "instTrans": "2.29%",
-      "shortFloat": "12.25%",
-      "perfYear": "46.88%",
-      "description": null
-    },
-    "canslimScores": {
-      "C": 8,
-      "A": 2,
-      "N": 10,
-      "S": 5,
-      "L": 6,
-      "I": 7,
-      "M": 7,
-      "total": 6.4,
-      "details": {
-        "C": [
-          "EPS Q/Q: +46.6% (良好)"
-        ],
-        "A": [
-          "EPS Y/Y: -7.0% (要注意)"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+10.7%の大幅高（新材料あり）"
-        ],
-        "S": [
-          "出来高比0.9x（低め）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア80（強い）"
-        ],
-        "I": [
-          "外国人持株比率データなし",
-          "機関投資家小幅買い増し+2.3%",
-          "ショートフロート12.2%（中程度）"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
+    "rank": 3,
+    "code": "PLTR",
+    "name": "Palantir Technologies Inc.",
+    "market": "NASDAQ",
+    "sector": "Technology / Software - Infrastructure",
+    "price": 128.84,
+    "change": "-1.35%",
+    "currency": "USD",
+    "totalScore": 6.4,
+    "buyRecommendation": "⏳ 様子見→条件未達",
+    "canslim": {
+      "C": {
+        "score": 10,
+        "label": "C — Current Quarterly EPS Growth",
+        "comment": "EPS Q/Q +658.0%（超高成長）。売上高Q/Q +70.0%"
+      },
+      "A": {
+        "score": 9,
+        "label": "A — Annual EPS Growth",
+        "comment": "EPS this Y +71.5%、EPS next Y +42.2%、EPS next 5Y +50.0%。ROE 26.2%、ROA 21.3%"
+      },
+      "N": {
+        "score": 1,
+        "label": "N — New Products / New 52W High",
+        "comment": "52週高値データなし。直近ニュース: Bernie Sanders Slams Tesla, Palantir For Not Paying Federal ..."
+      },
+      "S": {
+        "score": 5,
+        "label": "S — Supply/Demand",
+        "comment": "時価総額$308.1B（大型株）、Short Float 2.0%（健全）"
+      },
+      "L": {
+        "score": 7,
+        "label": "L — Leader in Industry",
+        "comment": "S&P500比+29.6%（強いRS）、SMA50比-21.4%（SMA50割れ）、1年リターン+46.7%"
+      },
+      "I": {
+        "score": 7,
+        "label": "I — Institutional Sponsorship",
+        "comment": "機関投資家買い増し+1.2%、機関投資家保有率56.1%（適正）。アナリスト推奨2.10、目標株価$187.37"
+      },
+      "M": {
+        "score": 6,
+        "label": "M — Market Direction",
+        "comment": "S&P500はSMA50上方だが勢い弱め（1ヶ月-0.3%）"
       }
     },
     "chartAnalysis": {
-      "currentPrice": 6.11,
-      "ma5": 5.69,
-      "ma25": 6.13,
-      "ma75": 6.12,
-      "rsScore": 80,
       "baseType": "上昇トレンド",
-      "baseMaturity": 66,
-      "pivotPoint": 7.43,
-      "volumeRatio": 0.88,
-      "atr": 0.45,
-      "week52High": 9.41,
-      "week52Low": 3.09
+      "baseDescription": "チャートデータ不足",
+      "pivotPoint": 209.6,
+      "pivotDescription": "52週高値$207.52の1%上、$209.60がピボットポイント。",
+      "breakoutVolume": "出来高データなし",
+      "rsScore": 59,
+      "rsDescription": "S&P500比+29.6%（過去1年）",
+      "volumePattern": "出来高パターン分析中",
+      "overallChartRating": "★★★☆☆",
+      "buyTiming": "52週高値$207.52を出来高を伴って上抜けた時点。ピボット$209.60での指値推奨。",
+      "caution": "標準的なリスク管理を適用。"
     },
-    "buyStrategy": {
-      "currentPrice": 6.11,
-      "buyPoints": {
-        "aggressive": {
-          "price": 5.69,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 6.13,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 6.12,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
+    "currentPrice": 128.84,
+    "ma5": 162.9,
+    "ma25": 166.22,
+    "ma75": 161.04,
+    "entryPoints": [
+      {
+        "label": "Breakout Entry (52W High)",
+        "price": 209.6,
+        "range": "$207.52〜$211.67",
+        "timing": "52週高値$207.52を出来高を伴って上抜けた時点。ピボット$209.60での指値推奨。",
+        "riskReward": 3.0
       },
-      "pivotPoint": 7.43,
-      "stopLoss": 5.44,
-      "targetPrice": 11.76,
-      "rrRatio": 8.43,
-      "recommendedAction": "⏳ 押し目待ち",
-      "actionCode": "WAIT",
-      "deviationFromPivot": -17.8
-    }
-  },
-  {
-    "ticker": "INTA",
-    "company": "Intapp Inc",
-    "price": "21.32",
-    "change": "9.50%",
-    "sector": null,
-    "industry": null,
-    "marketCap": "1.71B",
-    "country": null,
-    "finvizData": {
-      "epsQoQ": "44.04%",
-      "epsYoY": "0.51%",
-      "salesQoQ": "15.67%",
-      "instTrans": "-2.80%",
-      "shortFloat": "3.05%",
-      "perfYear": "-67.65%",
-      "description": null
-    },
-    "canslimScores": {
-      "C": 8,
-      "A": 5,
-      "N": 8,
-      "S": 5,
-      "L": 2,
-      "I": 6,
-      "M": 7,
-      "total": 5.9,
-      "details": {
-        "C": [
-          "EPS Q/Q: +44.0% (良好)"
-        ],
-        "A": [
-          "EPS Y/Y: +0.5% (普通)"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+9.5%の上昇"
-        ],
-        "S": [
-          "出来高比0.9x（低め）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア15（弱い）"
-        ],
-        "I": [
-          "外国人持株比率データなし",
-          "機関投資家売り越し-2.8%",
-          "ショートフロート3.0%（低い）"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
+      {
+        "label": "Pullback to 50-day MA",
+        "price": 166.22,
+        "range": "$161.23〜$171.21",
+        "timing": "50日移動平均（$166.22）への押し目。出来高減少後の反発時。",
+        "riskReward": 4.0
+      },
+      {
+        "label": "Deep Pullback (200-day MA)",
+        "price": 161.04,
+        "range": "$156.21〜$165.87",
+        "timing": "200日移動平均（$161.04）への深押し。長期上昇トレンド確認後。",
+        "riskReward": 5.0
       }
+    ],
+    "stopLoss": {
+      "price": 194.93,
+      "desc": "Breakout entry: $194.93 (pivot -7%)"
     },
-    "chartAnalysis": {
-      "currentPrice": 21.32,
-      "ma5": 21.52,
-      "ma25": 28.85,
-      "ma75": 38.35,
-      "rsScore": 15,
-      "baseType": "上昇トレンド",
-      "baseMaturity": 32,
-      "pivotPoint": 41.23,
-      "volumeRatio": 0.91,
-      "atr": 2.23,
-      "week52High": 67.76,
-      "week52Low": 19.24
-    },
-    "buyStrategy": {
-      "currentPrice": 21.32,
-      "buyPoints": {
-        "aggressive": {
-          "price": 21.52,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 28.85,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 38.35,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
-      },
-      "pivotPoint": 41.23,
-      "stopLoss": 17.97,
-      "targetPrice": 84.7,
-      "rrRatio": 18.92,
-      "recommendedAction": "⏳ 押し目待ち",
-      "actionCode": "WAIT",
-      "deviationFromPivot": -48.3
-    }
-  },
-  {
-    "ticker": "AMD",
-    "company": "Advanced Micro Devices Inc",
-    "price": "80.85",
-    "change": "8.77%",
-    "sector": null,
-    "industry": null,
-    "marketCap": "348.65B",
-    "country": null,
-    "finvizData": {
-      "epsQoQ": "210.61%",
-      "epsYoY": "163.27%",
-      "salesQoQ": "34.11%",
-      "instTrans": "1.98%",
-      "shortFloat": "2.08%",
-      "perfYear": "97.80%",
-      "description": null
-    },
-    "canslimScores": {
-      "C": 10,
-      "A": 10,
-      "N": 8,
-      "S": 7,
-      "L": 8,
-      "I": 8,
-      "M": 7,
-      "total": 8.3,
-      "details": {
-        "C": [
-          "EPS Q/Q: +210.6% (優秀)"
-        ],
-        "A": [
-          "EPS Y/Y: +163.3% (優秀)"
-        ],
-        "N": [
-          "52週高値更新中",
-          "本日+8.8%の上昇"
-        ],
-        "S": [
-          "出来高比1.9x（強い）",
-          "信用倍率データなし"
-        ],
-        "L": [
-          "RSスコア90（市場最強クラス）"
-        ],
-        "I": [
-          "外国人持株比率データなし",
-          "機関投資家小幅買い増し+2.0%",
-          "ショートフロート2.1%（低い）"
-        ],
-        "M": [
-          "日経平均+1.5%（上昇トレンド）",
-          "S&P500+0.75%（上昇トレンド）"
-        ]
-      }
-    },
-    "chartAnalysis": {
-      "currentPrice": 213.84,
-      "ma5": 202.82,
-      "ma25": 224.13,
-      "ma75": 221.72,
-      "rsScore": 90,
-      "baseType": "上昇トレンド",
-      "baseMaturity": 80,
-      "pivotPoint": 273.56,
-      "volumeRatio": 1.92,
-      "atr": 12.97,
-      "week52High": 267.08,
-      "week52Low": 76.48
-    },
-    "buyStrategy": {
-      "currentPrice": 213.84,
-      "buyPoints": {
-        "aggressive": {
-          "price": 202.82,
-          "type": "第1押し目（積極的）",
-          "description": "5日MA付近"
-        },
-        "standard": {
-          "price": 224.13,
-          "type": "第2押し目（標準）",
-          "description": "25日MA付近"
-        },
-        "conservative": {
-          "price": 221.72,
-          "type": "第3押し目（保守的）",
-          "description": "75日MA付近"
-        }
-      },
-      "pivotPoint": 273.56,
-      "stopLoss": 194.38,
-      "targetPrice": 333.85,
-      "rrRatio": 6.17,
-      "recommendedAction": "⏳ 押し目待ち",
-      "actionCode": "WAIT",
-      "deviationFromPivot": -21.8
+    "targetPrice": 187.37,
+    "targetBasis": "Analyst consensus $187.37",
+    "riskReward": 3.0,
+    "chartData": {
+      "labels": [
+        "Mar 25",
+        "Apr 25",
+        "May 25",
+        "Jun 25",
+        "Jul 25",
+        "Aug 25",
+        "Sep 25",
+        "Oct 25",
+        "Nov 25",
+        "Dec 25",
+        "Jan 26",
+        "Feb 26"
+      ],
+      "prices": [
+        84.4,
+        118.44,
+        131.78,
+        136.32,
+        158.35,
+        156.71,
+        182.42,
+        200.47,
+        168.45,
+        177.75,
+        146.59,
+        128.84
+      ],
+      "ma5": [
+        84.4,
+        101.42,
+        111.54,
+        117.73,
+        125.86,
+        140.32,
+        153.12,
+        166.85,
+        173.28,
+        177.16,
+        175.14,
+        164.42
+      ],
+      "ma25": [
+        84.4,
+        101.42,
+        111.54,
+        117.73,
+        125.86,
+        131.0,
+        138.35,
+        146.11,
+        148.59,
+        151.51,
+        151.06,
+        149.21
+      ],
+      "ma75": [
+        84.4,
+        101.42,
+        111.54,
+        117.73,
+        125.86,
+        131.0,
+        138.35,
+        146.11,
+        148.59,
+        151.51,
+        151.06,
+        149.21
+      ],
+      "volumes": [
+        2206.07,
+        2370.59,
+        2054.84,
+        1747.72,
+        1246.05,
+        1747.61,
+        1215.75,
+        1088.11,
+        1195.85,
+        758.77,
+        790.57,
+        996.21
+      ]
     }
   }
 ];
-
-// エクスポート（モジュール環境用）
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { reportDate, marketSummary, domesticStocks, usStocks };
-}

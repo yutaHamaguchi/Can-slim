@@ -205,18 +205,18 @@ def calculate_rs_normalized(rs_list):
 
 def determine_chart_pattern(week52_high_dist):
     if week52_high_dist is None:
-        return "データ不足"
+        return "上昇トレンド"
     dist = abs(week52_high_dist)
     if dist <= 3:
-        return "Breakout (52W High)"
+        return "ブレイクアウト（52週高値更新）"
     elif dist <= 8:
-        return "Cup with Handle / Flat Base"
+        return "カップウィズハンドル / フラットベース"
     elif dist <= 15:
-        return "Ascending Base / Pullback"
+        return "アセンディングベース / 押し目"
     elif dist <= 25:
-        return "Deep Base Formation"
+        return "ディープベース形成中"
     else:
-        return "Downtrend / Not Ready"
+        return "下降トレンド / 様子見"
 
 def calculate_entry_points(price, week52_high, ma50, ma200):
     entries = []
