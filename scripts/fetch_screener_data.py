@@ -1,83 +1,93 @@
 #!/usr/bin/env python3
 """
-Fetch US stock tickers from Finviz screener using CANSLIM criteria.
-Criteria:
-  - US stocks only (geo_usa)
-  - Small to Mid cap (cap_midsmall)
-  - EPS Q/Q growth > 25% (fa_epsqoq_o25)
-  - EPS Y/Y growth > 25% (fa_epsyoy_o25)
-  - Sales Q/Q growth > 25% (fa_salesqoq_o25)
-  - Average volume > 200K (sh_avgvol_o200)
-  - 52-week high within 15% (ta_highlow52w_b15h)
-  - Sorted by volume descending
+CANSLIM Screener - TradingView CANSLIM_US
+GitHub ActionsのSecretsから渡されたセッションCookieを使用して
+TradingViewの保存済みスクリーナーから銘柄を取得する
 """
-import requests
-from bs4 import BeautifulSoup
+
 import json
 import sys
-import time
-import re
+import os
+import requests
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-}
+# 保存済みスクリーナーのID
+# URL: https://jp.tradingview.com/screener/9XehwWzr/
+SCREENER_ID = "9XehwWzr"
 
-SCREENER_URL = (
-    "https://finviz.com/screener.ashx?v=111"
-    "&f=cap_midsmall,fa_epsqoq_o25,fa_epsyoy_o25,fa_salesqoq_o25,"
-    "geo_usa,sh_avgvol_o200,ta_highlow52w_b15h"
-    "&ft=4&o=-volume"
-)
+def fetch_tickers_from_tradingview():
+    """TradingViewのAPIを叩いて保存済みスクリーナーの結果を取得する"""
+    
+    # GitHub ActionsのSecretsから取得したセッション情報
+    sessionid = os.environ.get("TRADINGVIEW_SESSIONID")
+    sessionid_sign = os.environ.get("TRADINGVIEW_SESSIONID_SIGN")
+    
+    if not sessionid or not sessionid_sign:
+        print("Error: TRADINGVIEW_SESSIONID or TRADINGVIEW_SESSIONID_SIGN not set", file=sys.stderr)
+        return []
 
-# Exclude REITs and financial instruments that don't fit CANSLIM
-EXCLUDE_TICKERS = {'ORC', 'EFC', 'NLY', 'AGNC', 'STWD', 'BXMT'}
+    url = "https://scanner.tradingview.com/america/scan"
+    
+    # 保存済みスクリーナーを適用するためのペイロード
+    # フィルター条件はサーバー側に保存されているため、IDを指定する
+    payload = {
+        "filter": [],
+        "options": {"lang": "ja"},
+        "markets": ["america"],
+        "symbols": {"query": {"types": []}, "tickers": []},
+        "columns": ["base_currency_logoid", "currency", "description", "exchange", "name", "type", "subtype", "update_mode"],
+        "sort": {"sortBy": "name", "sortOrder": "asc"},
+        "range": [0, 100],
+        "preset": SCREENER_ID
+    }
+    
+    cookies = {
+        "sessionid": sessionid,
+        "sessionid_sign": sessionid_sign
+    }
+    
+    headers = {
+        "Content-Type": "application/json",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+    }
 
-def fetch_tickers():
-    tickers = []
-    seen = set()
-    page = 1
+    try:
+        print(f"Fetching TradingView screener {SCREENER_ID}...", file=sys.stderr)
+        response = requests.post(url, json=payload, cookies=cookies, headers=headers, timeout=15)
+        response.raise_for_status()
+        
+        data = response.json()
+        tickers = []
+        
+        for item in data.get("data", []):
+            # item["s"] は "NASDAQ:ANAB" のような形式
+            symbol_full = item.get("s", "")
+            if ":" in symbol_full:
+                ticker = symbol_full.split(":")[1]
+                tickers.append(ticker)
+        
+        print(f"Successfully fetched {len(tickers)} tickers: {tickers}", file=sys.stderr)
+        return tickers
+        
+    except Exception as e:
+        print(f"Error fetching from TradingView: {e}", file=sys.stderr)
+        # 失敗した場合は空リストを返す
+        return []
 
-    while True:
-        url = SCREENER_URL + f"&r={1 + (page-1)*20}"
-        try:
-            resp = requests.get(url, headers=HEADERS, timeout=20)
-            resp.raise_for_status()
-        except Exception as e:
-            print(f"Error fetching page {page}: {e}", file=sys.stderr)
-            break
+def main():
+    tickers = fetch_tickers_from_tradingview()
+    
+    # フィルタリング (念のため)
+    tickers = [t for t in tickers if len(t) <= 5 and t.isalpha()]
+    
+    # 出力
+    print(json.dumps(tickers))
 
-        soup = BeautifulSoup(resp.text, "html.parser")
-
-        # Extract tickers from href attribute (most reliable method)
-        ticker_links = soup.find_all('a', href=re.compile(r'quote\.ashx\?t=[A-Z]+\b'))
-        page_tickers = []
-        for a in ticker_links:
-            href = a.get('href', '')
-            m = re.search(r'quote\.ashx\?t=([A-Z]{1,5})\b', href)
-            if m:
-                t = m.group(1)
-                if t not in seen and t not in EXCLUDE_TICKERS:
-                    seen.add(t)
-                    page_tickers.append(t)
-
-        if not page_tickers:
-            break
-
-        tickers.extend(page_tickers)
-        print(f"Page {page}: found {len(page_tickers)} unique tickers", file=sys.stderr)
-
-        # Check if there's a next page
-        next_btn = soup.select_one("a#screener-next-page")
-        if not next_btn or len(page_tickers) < 20:
-            break
-
-        page += 1
-        time.sleep(1.5)
-
-    return tickers
+    # 後続のスクリプトのために中間ファイルを保存
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    repo_dir = os.path.dirname(script_dir)
+    screener_data = [{"ticker": t} for t in tickers]
+    with open(os.path.join(repo_dir, "screener_data.json"), "w") as f:
+        json.dump(screener_data, f, indent=2)
 
 if __name__ == "__main__":
-    tickers = fetch_tickers()
-    print(f"Total tickers found: {len(tickers)}", file=sys.stderr)
-    print(json.dumps(tickers))
+    main()

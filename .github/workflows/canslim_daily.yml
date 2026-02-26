@@ -1,65 +1,55 @@
-name: CANSLIM Daily Report (US Stocks)
+name: 📊 CANSLIM 米国株デイリーレポート
 
 on:
   schedule:
-    # Run every weekday at 7:00 AM JST (22:00 UTC Sunday-Thursday)
-    - cron: '0 22 * * 0-4'
-  workflow_dispatch:  # Allow manual trigger
+    - cron: '0 22 * * 0-4' # 月〜金の朝7時JST (22:00 UTC)
+  workflow_dispatch: # 手動実行用
 
 jobs:
-  generate-report:
+  update-report:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Checkout repository
+      - name: 🚀 リポジトリをチェックアウト
         uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: 🐍 Python環境のセットアップ
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+          cache: 'pip'
 
-      - name: Install dependencies
+      - name: 📦 依存パッケージのインストール
         run: |
-          pip install --upgrade pip
-          pip install requests beautifulsoup4 yfinance pandas
+          pip install yfinance pandas requests beautifulsoup4
 
-      - name: Run CANSLIM screener (fetch tickers)
+      - name: 🔍 TradingViewスクリーニング実行
+        env:
+          TRADINGVIEW_SESSIONID: ${{ secrets.TRADINGVIEW_SESSIONID }}
+          TRADINGVIEW_SESSIONID_SIGN: ${{ secrets.TRADINGVIEW_SESSIONID_SIGN }}
         run: |
           python scripts/fetch_screener_data.py > tickers.json
-          echo "Tickers found: $(cat tickers.json | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')"
+          echo "取得銘柄: $(cat tickers.json)"
 
-      - name: Fetch stock data
+      - name: 📈 財務データ取得
         run: |
+          # tickers.jsonの内容を引数として渡す
           python scripts/fetch_stock_data.py tickers.json > stock_data.json
-          echo "Stocks fetched: $(cat stock_data.json | python3 -c 'import json,sys; print(len(json.load(sys.stdin)))')"
 
-      - name: Calculate CANSLIM scores
+      - name: 🔢 CANSLIMスコアリング
         run: |
-          python scripts/calculate_canslim.py stock_data.json > canslim_results.json
-          echo "Top stocks:"
-          cat canslim_results.json | python3 -c "
-          import json, sys
-          results = json.load(sys.stdin)
-          for r in results[:5]:
-              print(f\"  #{r['rank']} {r['code']} ({r['name'][:30]}): {r['totalScore']}/10\")
-          "
+          python scripts/calculate_canslim.py stock_data.json > results.json
 
-      - name: Generate data.js
+      - name: 📄 レポート(data.js)生成
         run: |
-          REPO_DIR=$(pwd) python scripts/generate_report.py canslim_results.json
+          python scripts/generate_report.py results.json
 
-      - name: Commit and push data.js
+      - name: 📤 GitHubに反映
         run: |
-          git config user.name "CANSLIM Bot"
-          git config user.email "canslim-bot@github-actions"
-          git add data.js
-          if git diff --staged --quiet; then
-            echo "No changes to commit"
-          else
-            REPORT_DATE=$(date '+%Y年%m月%d日' -d 'TZ="Asia/Tokyo"' 2>/dev/null || date '+%Y年%m月%d日')
-            git commit -m "📊 CANSLIMデイリーレポート ${REPORT_DATE}"
-            git push
-          fi
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add data.js index.html scripts/ .github/
+          git commit -m "📊 CANSLIMデイリーレポート $(date +'%Y年%m月%d日')" || echo "変更なし"
+          git push
