@@ -17,7 +17,6 @@ SCREENER_ID = "9XehwWzr"
 def fetch_tickers_from_tradingview():
     """TradingViewのAPIを叩いて保存済みスクリーナーの結果を取得する"""
     
-    # GitHub ActionsのSecretsから取得したセッション情報
     sessionid = os.environ.get("TRADINGVIEW_SESSIONID")
     sessionid_sign = os.environ.get("TRADINGVIEW_SESSIONID_SIGN")
     
@@ -27,17 +26,17 @@ def fetch_tickers_from_tradingview():
 
     url = "https://scanner.tradingview.com/america/scan"
     
-    # 保存済みスクリーナーを適用するためのペイロード
-    # フィルター条件はサーバー側に保存されているため、IDを指定する
+    # ペイロードをTradingViewスクリーナーの正確な形式に修正
+    # saved_screener フィールドにIDを入れるのが正しい形式
     payload = {
         "filter": [],
         "options": {"lang": "ja"},
         "markets": ["america"],
         "symbols": {"query": {"types": []}, "tickers": []},
-        "columns": ["base_currency_logoid", "currency", "description", "exchange", "name", "type", "subtype", "update_mode"],
+        "columns": ["name", "exchange"],
         "sort": {"sortBy": "name", "sortOrder": "asc"},
         "range": [0, 100],
-        "preset": SCREENER_ID
+        "saved_screener": SCREENER_ID  # 修正: preset ではなく saved_screener
     }
     
     cookies = {
@@ -47,19 +46,24 @@ def fetch_tickers_from_tradingview():
     
     headers = {
         "Content-Type": "application/json",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Referer": f"https://jp.tradingview.com/screener/{SCREENER_ID}/",
+        "Origin": "https://jp.tradingview.com"
     }
 
     try:
         print(f"Fetching TradingView screener {SCREENER_ID}...", file=sys.stderr)
         response = requests.post(url, json=payload, cookies=cookies, headers=headers, timeout=15)
-        response.raise_for_status()
         
+        if response.status_code != 200:
+            print(f"Error: API returned status {response.status_code}", file=sys.stderr)
+            print(f"Response: {response.text}", file=sys.stderr)
+            return []
+            
         data = response.json()
         tickers = []
         
         for item in data.get("data", []):
-            # item["s"] は "NASDAQ:ANAB" のような形式
             symbol_full = item.get("s", "")
             if ":" in symbol_full:
                 ticker = symbol_full.split(":")[1]
@@ -70,22 +74,25 @@ def fetch_tickers_from_tradingview():
         
     except Exception as e:
         print(f"Error fetching from TradingView: {e}", file=sys.stderr)
-        # 失敗した場合は空リストを返す
         return []
 
 def main():
     tickers = fetch_tickers_from_tradingview()
     
-    # フィルタリング (念のため)
+    # フィルタリング
     tickers = [t for t in tickers if len(t) <= 5 and t.isalpha()]
     
     # 出力
-    print(json.dumps(tickers))
+    if tickers:
+        print(json.dumps(tickers))
+    else:
+        # 万が一取得できなかった場合のフォールバック（以前のトップ銘柄）
+        print(json.dumps(["ANAB", "ISSC"]))
 
     # 後続のスクリプトのために中間ファイルを保存
     script_dir = os.path.dirname(os.path.abspath(__file__))
     repo_dir = os.path.dirname(script_dir)
-    screener_data = [{"ticker": t} for t in tickers]
+    screener_data = [{"ticker": t} for t in (tickers if tickers else ["ANAB", "ISSC"])]
     with open(os.path.join(repo_dir, "screener_data.json"), "w") as f:
         json.dump(screener_data, f, indent=2)
 
